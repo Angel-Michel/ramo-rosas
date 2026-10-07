@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para la pequeña Key</title>
+    <title>Un Ramo para Key</title>
     <style>
-        /* Fondo de atardecer */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
         body {
             margin: 0;
-            padding: 0;
-            height: 100vh;
-            background: linear-gradient(to bottom, #2b1055 0%, #7597de 30%, #f6a56c 70%, #ff7b54 100%);
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
             color: #fff;
+            /* Degradado de atardecer denso y espectacular */
+            background: linear-gradient(180deg, #100030 0%, #301040 20%, #703060 40%, #e06060 60%, #ff9060 80%, #ffb070 100%);
         }
 
-        /* Lienzo para los fuegos artificiales */
+        /* Lienzo de fuegos artificiales sutiles y coloridos */
         canvas {
             position: absolute;
             top: 0;
@@ -29,169 +30,265 @@
             z-index: 1;
         }
 
-        /* Diseño de la tarjeta del ramo (Glassmorphism) */
-        .tarjeta-ramo {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 40px 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        /* Contenedor principal del Ramo */
+        .ramo-container {
+            position: relative;
             z-index: 2;
             text-align: center;
-            max-width: 400px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            animation: flotar-tarjeta 4s ease-in-out infinite;
-        }
-
-        @keyframes flotar-tarjeta {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .titulo-key {
-            color: #fff;
-            margin-top: 0;
-            font-size: 2.2em;
-            text-shadow: 0 0 15px rgba(255, 105, 180, 0.9);
-            margin-bottom: 10px;
-        }
-
-        /* Estilos del ramo visual */
-        .ramo-visual {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 600px;
+            animation: floatBouquet 4s ease-in-out infinite;
+        }
+
+        /* Título */
+        .titulo {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .titulo .heart {
+            color: #ff3366;
+            display: inline-block;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        /* El Ramo Visual Denso y Grande */
+        .bouquet-visual {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 30px 0;
+            display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap;
-            margin: 30px 0;
-            padding: 10px;
-            width: 100%;
         }
 
+        /* Flores individuales */
         .flor {
-            margin: -12px;
-            filter: drop-shadow(2px 4px 5px rgba(0,0,0,0.4));
-            animation: latido-flor 3s ease-in-out infinite;
-            animation-delay: var(--d);
-            z-index: var(--z);
+            position: absolute;
+            font-size: 4rem;
+            animation: florFloat 3s ease-in-out infinite;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
         }
 
-        @keyframes latido-flor {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.1) rotate(5deg); }
+        /* Posicionamiento denso e irregular de las flores para forma de ramo */
+        .flor:nth-child(1) { top: 0%; left: 30%; animation-delay: 0s; font-size: 5rem; }
+        .flor:nth-child(2) { top: 10%; left: 60%; animation-delay: 0.2s; }
+        .flor:nth-child(3) { top: 30%; left: 10%; animation-delay: 0.4s; }
+        .flor:nth-child(4) { top: 40%; left: 80%; animation-delay: 0.6s; font-size: 5rem; }
+        .flor:nth-child(5) { top: 55%; left: 35%; animation-delay: 0.8s; font-size: 4.5rem; }
+        .flor:nth-child(6) { top: 65%; left: 65%; animation-delay: 1.0s; }
+        .flor:nth-child(7) { top: 25%; left: 45%; animation-delay: 1.2s; font-size: 4.8rem; }
+        .flor:nth-child(8) { top: 45%; left: 55%; animation-delay: 1.4s; }
+        .flor:nth-child(9) { top: 50%; left: 20%; animation-delay: 1.6s; }
+        .flor:nth-child(10) { top: 70%; left: 40%; animation-delay: 1.8s; font-size: 4rem; }
+        .flor:nth-child(11) { top: 15%; left: 15%; animation-delay: 2.0s; }
+        .flor:nth-child(12) { top: 60%; left: 85%; animation-delay: 2.2s; }
+
+        /* Cinta del ramo */
+        .ribbon {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 7rem;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+            animation: ribbonSway 2s ease-in-out infinite;
         }
 
+        /* Mensaje */
         .mensaje {
-            font-size: 1.2em;
+            font-size: 1.3rem;
             line-height: 1.6;
-            font-weight: 500;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-            margin-bottom: 0;
+            margin-top: 30px;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease-out;
+            max-width: 450px;
+            color: rgba(255, 255, 255, 0.95);
         }
+
+        /* Animaciones */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes floatBouquet {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes florFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(3px, -4px) rotate(2deg); }
+        }
+
+        @keyframes ribbonSway {
+            0%, 100% { transform: translateX(-50%) rotate(-6deg); }
+            50% { transform: translateX(-50%) rotate(6deg); }
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- Lienzo donde se dibujarán los fuegos artificiales -->
-    <canvas id="fuegosArtificiales"></canvas>
+    <canvas id="fireworksCanvas"></canvas>
 
-    <!-- Contenido de la tarjeta -->
-    <div class="tarjeta-ramo">
-        <h1 class="titulo-key">Para la pequeña Key 💖</h1>
+    <div class="ramo-container">
+        <h1 class="titulo">Para la pequeña Key <span class="heart">💖</span></h1>
         
-        <!-- Ramo de rosas rojas y rosas -->
-        <div class="ramo-visual">
-            <div class="flor" style="--d: 0s; --z: 1; font-size: 4rem;">🌹</div>
-            <div class="flor" style="--d: 0.3s; --z: 2; font-size: 3.5rem;">🌸</div>
-            <div class="flor" style="--d: 0.6s; --z: 3; font-size: 4.8rem;">🌹</div>
-            <div class="flor" style="--d: 0.9s; --z: 2; font-size: 3.8rem;">🌺</div>
-            <div class="flor" style="--d: 1.2s; --z: 1; font-size: 4.2rem;">🌹</div>
-            <div class="flor" style="--d: 1.5s; --z: 2; font-size: 3.5rem;">🌸</div>
-            <div class="flor" style="--d: 1.8s; --z: 1; font-size: 4rem;">🌹</div>
+        <div class="bouquet-visual">
+            <!-- Flores individuales para un ramo denso y grande -->
+            <div class="flor rose red">🌹</div>
+            <div class="flor flower pink">🌸</div>
+            <div class="flor rose red">🌹</div>
+            <div class="flor rose red">🌹</div>
+            <div class="flor flower pink">🌸</div>
+            <div class="flor rose red">🌹</div>
+            <div class="flor rose red">🌹</div>
+            <div class="flor flower pink">🌸</div>
+            <div class="flor rose red">🌹</div>
+            <div class="flor flower pink">🌸</div>
+            <div class="flor rose red">🌹</div>
+            <div class="flor flower pink">🌸</div>
+            
+            <!-- Cinta del ramo -->
+            <div class="ribbon">🎀</div>
         </div>
 
-        <p class="mensaje">Un ramo de flores tan hermosas como tú. Que este atardecer ilumine tu día y nunca dejes de sonreír.</p>
+        <p class="mensaje">
+            Un ramo de flores tan hermosas como tú. Que este atardecer ilumine tu día y nunca dejes de sonreír.
+        </p>
     </div>
 
-    <!-- Script de JavaScript para los fuegos artificiales -->
     <script>
-        const canvas = document.getElementById('fuegosArtificiales');
+        const canvas = document.getElementById('fireworksCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let particulas = [];
-        const colores = ['#ff3333', '#ffaa00', '#ff00aa', '#ffffff', '#ffd700'];
+        let particles = [];
+        let fireworks = [];
 
-        class Particula {
-            constructor(x, y) {
+        class Particle {
+            constructor(x, y, color) {
                 this.x = x;
                 this.y = y;
-                this.r = Math.random() * 3 + 1;
-                this.color = colores[Math.floor(Math.random() * colores.length)];
-                
-                const angulo = Math.random() * Math.PI * 2;
-                const velocidad = Math.random() * 6 + 2;
-                this.vx = Math.cos(angulo) * velocidad;
-                this.vy = Math.sin(angulo) * velocidad;
-                
-                this.alpha = 1;
-                this.decaimiento = Math.random() * 0.02 + 0.01;
+                this.color = color;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * (Math.random() * 6),
+                    y: (Math.random() - 0.5) * (Math.random() * 6)
+                };
+                this.radius = Math.random() * 2 + 1;
+                this.opacity = 1;
+                this.gravity = 0.05;
+                this.friction = 0.99;
             }
 
-            actualizar() {
-                this.x += this.vx;
-                this.vy += 0.05; 
-                this.y += this.vy;
-                this.alpha -= this.decaimiento;
-            }
-
-            dibujar() {
-                ctx.globalAlpha = this.alpha;
+            draw() {
+                ctx.globalAlpha = this.opacity;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
                 ctx.fillStyle = this.color;
                 ctx.fill();
             }
-        }
 
-        function crearFuegoArtificial() {
-            const x = Math.random() * canvas.width;
-            const y = (Math.random() * canvas.height) / 2;
-            
-            for (let i = 0; i < 60; i++) {
-                particulas.push(new Particula(x, y));
+            update() {
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+                this.velocity.y += this.gravity;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.opacity -= 0.01;
             }
         }
 
-        function animar() {
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.globalCompositeOperation = 'lighter';
-            
-            if (Math.random() < 0.04) {
-                crearFuegoArtificial();
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * (canvas.height * 0.5);
+                this.velocity = { y: (Math.random() * -5 - 5) };
+                this.radius = 2;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                this.exploded = false;
             }
 
-            for (let i = particulas.length - 1; i >= 0; i--) {
-                particulas[i].actualizar();
-                particulas[i].dibujar();
-                
-                if (particulas[i].alpha <= 0) {
-                    particulas.splice(i, 1);
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            update() {
+                this.y += this.velocity.y;
+                if (this.y <= this.targetY && !this.exploded) {
+                    this.exploded = true;
+                    this.explode();
                 }
             }
-            requestAnimationFrame(animar);
+
+            explode() {
+                for (let i = 0; i < 50; i++) {
+                    particles.push(new Particle(this.x, this.y, this.color));
+                }
+            }
         }
 
-        animar();
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Desvanecimiento suave para la estela, pero sin oscurecer demasiado el fondo principal
+            ctx.fillStyle = 'rgba(20, 10, 30, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            fireworks.forEach((firework, index) => {
+                if (!firework.exploded) {
+                    firework.draw();
+                    firework.update();
+                }
+            });
+
+            particles.forEach((particle, index) => {
+                if (particle.opacity > 0) {
+                    particle.draw();
+                    particle.update();
+                } else {
+                    particles.splice(index, 1);
+                }
+            });
+
+            if (Math.random() < 0.03) {
+                fireworks.push(new Firework());
+            }
+        }
+
+        animate();
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
+
     </script>
 </body>
 </html>
