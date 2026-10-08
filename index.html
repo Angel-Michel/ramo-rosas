@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un Ramo Eterno para Key</title>
+    <title>La Enredadera de Key</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Mountains+of+Christmas:wght@700&display=swap');
 
@@ -13,13 +13,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(180deg, #070014 0%, #1c0036 30%, #3d004d 60%, #661a00 100%);
+            min-height: 100vh;
+            background: linear-gradient(180deg, #05000a 0%, #17002b 40%, #3d004d 70%, #661a00 100%);
             font-family: 'Cinzel', serif;
             color: #ffebd6;
         }
 
-        /* Lienzo para partículas mágicas (pétalos y almas) */
+        /* Lienzo mágico de fondo */
         canvas {
             position: absolute;
             top: 0;
@@ -30,8 +30,8 @@
             pointer-events: none;
         }
 
-        /* Contenedor principal */
-        .altar-container {
+        /* Contenedor principal de la ofrenda/enredadera */
+        .escenario {
             position: relative;
             z-index: 2;
             text-align: center;
@@ -39,161 +39,199 @@
             flex-direction: column;
             align-items: center;
             width: 95%;
-            max-width: 700px;
+            max-width: 600px;
+            height: 100vh;
+            justify-content: space-evenly;
         }
 
-        /* Título al estilo Burton / Día de Muertos */
+        /* Título */
         .titulo {
             font-family: 'Mountains of Christmas', cursive;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            margin: 10px 0;
             color: #ff9900;
             text-shadow: 0 0 15px #ff5500, 2px 2px 4px #000;
             animation: pulseGlow 2s infinite alternate;
         }
 
-        /* El Ramo Híbrido (Cempasúchil y Rosas) */
-        .bouquet-visual {
+        /* --- SISTEMA DE LA ENREDADERA --- */
+        .enredadera-container {
             position: relative;
-            width: 400px;
-            height: 400px;
-            margin: 20px 0;
+            width: 100%;
+            max-width: 350px;
+            aspect-ratio: 3 / 4;
+            margin: 0 auto;
+        }
+
+        /* SVG que dibuja los tallos retorcidos */
+        .svg-ramas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            filter: drop-shadow(0px 0px 5px rgba(0,0,0,0.8));
+        }
+
+        .rama {
+            fill: none;
+            stroke: #1a0d00; /* Color oscuro Burtonesco */
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            /* Animación de crecimiento */
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: crecerRama 4s ease-out forwards;
+        }
+
+        /* Tallo principal */
+        .rama-1 { animation-delay: 0.2s; stroke-width: 3.5; }
+        /* Ramas secundarias */
+        .rama-2 { animation-delay: 1.5s; stroke: #261300; }
+        .rama-3 { animation-delay: 2.5s; stroke: #261300; }
+        .rama-4 { animation-delay: 2.0s; }
+
+        /* Contenedores de los brotes (Flores y Personajes) */
+        .brote {
+            position: absolute;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            animation: floatAltar 5s ease-in-out infinite;
+            justify-content: center;
         }
 
-        /* Flores */
-        .flor {
-            position: absolute;
-            font-size: 3.5rem;
-            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.8));
-            animation: breathe 3s ease-in-out infinite;
-        }
-
-        /* Diseño de ramo tipo corona/arco */
-        .flor:nth-child(1) { top: 10%; left: 50%; transform: translateX(-50%); font-size: 4.5rem; animation-delay: 0s; } /* 🏵️ Centro arriba */
-        .flor:nth-child(2) { top: 20%; left: 20%; animation-delay: 0.2s; } /* 🌼 */
-        .flor:nth-child(3) { top: 20%; right: 20%; animation-delay: 0.4s; } /* 🥀 */
-        .flor:nth-child(4) { top: 45%; left: 5%; animation-delay: 0.6s; font-size: 4rem; } /* 🏵️ */
-        .flor:nth-child(5) { top: 45%; right: 5%; animation-delay: 0.8s; font-size: 4rem; } /* 🖤 */
-        .flor:nth-child(6) { top: 70%; left: 15%; animation-delay: 1.0s; } /* 🥀 */
-        .flor:nth-child(7) { top: 70%; right: 15%; animation-delay: 1.2s; } /* 🌼 */
-        .flor:nth-child(8) { top: 85%; left: 50%; transform: translateX(-50%); font-size: 4.5rem; animation-delay: 1.4s; } /* 🏵️ Centro abajo */
-        .flor:nth-child(9) { top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 5rem; animation-delay: 1.6s; z-index: 5; } /* 🏵️ Corazón del ramo */
-        .flor:nth-child(10) { top: 35%; left: 35%; animation-delay: 1.8s; } /* 🖤 */
-        .flor:nth-child(11) { top: 35%; right: 35%; animation-delay: 2.0s; } /* 🌼 */
-
-        /* Personajes Minis (Estilo flotante mágico) */
-        .mini-personaje {
-            position: absolute;
-            font-size: 2.5rem;
-            background: rgba(0, 0, 0, 0.4);
+        /* Brotes de Flores simples */
+        .flor { font-size: 2.5rem; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.8)); }
+        
+        /* Camafeos de los Personajes */
+        .personaje {
+            background: radial-gradient(circle, #2a163b 0%, #0d0014 100%);
+            border: 2px solid #ff9900;
             border-radius: 50%;
-            padding: 10px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(5px);
-            z-index: 10;
+            padding: 8px 12px;
+            box-shadow: 0 0 15px rgba(255, 153, 0, 0.4), inset 0 0 10px #000;
+            font-size: 1.8rem;
+            position: relative;
         }
 
-        .jack { top: 5%; left: -10%; animation: miniFloat 4s ease-in-out infinite alternate; box-shadow: 0 0 15px #fff; }
-        .emily { top: 5%; right: -10%; animation: miniFloat 3.5s ease-in-out infinite alternate-reverse; box-shadow: 0 0 15px #00aaff; }
-        .victor { bottom: 10%; right: -15%; animation: miniFloat 4.2s ease-in-out infinite alternate; box-shadow: 0 0 15px #888; }
-        .perritos { bottom: 10%; left: -15%; animation: miniFloat 3.8s ease-in-out infinite alternate-reverse; box-shadow: 0 0 15px #ff9900; }
-
+        /* Colores de resplandor por personaje */
+        .personaje.jack { border-color: #ffffff; box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
+        .personaje.emily { border-color: #55ccff; box-shadow: 0 0 15px rgba(85, 204, 255, 0.5); }
+        .personaje.victor { border-color: #888888; box-shadow: 0 0 15px rgba(136, 136, 136, 0.5); }
+        
         .nombre-mini {
             font-family: 'Arial', sans-serif;
-            font-size: 0.6rem;
-            display: block;
-            margin-top: -5px;
-            text-align: center;
-            letter-spacing: 1px;
+            font-size: 0.65rem;
             color: #ddd;
+            margin-top: 5px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
-        /* Mensaje poético */
+        /* Posiciones y Tiempos exactos sobre la enredadera */
+        /* Flores */
+        .brote:nth-child(2) { top: 85%; left: 45%; animation-delay: 1.0s; } /* 🏵️ base */
+        .brote:nth-child(3) { top: 70%; left: 35%; animation-delay: 1.5s; } /* 🥀 */
+        .brote:nth-child(4) { top: 40%; left: 65%; animation-delay: 2.5s; } /* 🏵️ medio */
+        .brote:nth-child(5) { top: 15%; left: 40%; animation-delay: 3.5s; } /* 🖤 punta */
+        
+        /* Personajes */
+        .brote:nth-child(6) { top: 65%; left: 75%; animation-delay: 2.2s; } /* Zero & Scraps */
+        .brote:nth-child(7) { top: 50%; left: 25%; animation-delay: 2.8s; } /* Victor */
+        .brote:nth-child(8) { top: 25%; left: 75%; animation-delay: 3.4s; } /* Jack */
+        .brote:nth-child(9) { top: 10%; left: 20%; animation-delay: 4.0s; } /* Emily */
+
+        /* Animación de flotación contínua después de nacer */
+        .flotar-continuo { animation: sway 4s ease-in-out infinite alternate; }
+
+        /* Mensaje final */
         .mensaje {
-            font-size: 1.4rem;
-            line-height: 1.6;
-            margin-top: 20px;
-            padding: 20px 30px;
-            background: rgba(15, 0, 25, 0.6);
+            font-size: 1.1rem;
+            line-height: 1.5;
+            padding: 15px 25px;
+            background: rgba(10, 0, 20, 0.7);
             border: 1px solid rgba(255, 153, 0, 0.3);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-            text-shadow: 1px 1px 2px #000;
-            animation: fadeIn 2s ease-out;
-            max-width: 550px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+            animation: fadeInMsg 5s ease-out forwards;
+            opacity: 0;
             color: #ffdfba;
+            margin-bottom: 20px;
         }
+        .resaltar { color: #ff9900; font-weight: bold; }
+        .resaltar-azul { color: #55ccff; font-weight: bold; }
 
-        .resaltar {
-            color: #ff9900;
-            font-weight: bold;
+        /* KEYFRAMES */
+        @keyframes crecerRama {
+            to { stroke-dashoffset: 0; }
         }
-        .resaltar-azul {
-            color: #55ccff;
-            font-weight: bold;
+        @keyframes florecer {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
-
-        /* Animaciones */
         @keyframes pulseGlow {
             0% { text-shadow: 0 0 10px #ff5500, 2px 2px 4px #000; }
-            100% { text-shadow: 0 0 25px #ffaa00, 0 0 10px #ff0000, 2px 2px 4px #000; }
+            100% { text-shadow: 0 0 20px #ffaa00, 0 0 10px #ff0000, 2px 2px 4px #000; }
         }
-
-        @keyframes floatAltar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @keyframes sway {
+            0% { transform: translate(-50%, -50%) rotate(-5deg); }
+            100% { transform: translate(-50%, -50%) rotate(5deg); }
         }
-
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes fadeInMsg {
+            0%, 70% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes miniFloat {
-            0% { transform: translateY(0) rotate(-5deg); }
-            100% { transform: translateY(-20px) rotate(5deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
     </style>
 </head>
 <body>
 
-    <!-- Fondo de pétalos y almas -->
+    <!-- Fondo Mágico -->
     <canvas id="magicCanvas"></canvas>
 
-    <div class="altar-container">
+    <div class="escenario">
         <h1 class="titulo">Para la pequeña Key 🦋</h1>
         
-        <div class="bouquet-visual">
-            <!-- Minis de los personajes -->
-            <div class="mini-personaje jack">💀🎃<span class="nombre-mini">Jack</span></div>
-            <div class="mini-personaje emily">👰🏻‍♀️🦋<span class="nombre-mini">Emily</span></div>
-            <div class="mini-personaje victor">🤵🏻‍♂️🕸️<span class="nombre-mini">Victor</span></div>
-            <div class="mini-personaje perritos">🐶👻<span class="nombre-mini">Zero & Scraps</span></div>
+        <div class="enredadera-container">
+            <!-- Dibujo SVG de la Enredadera -->
+            <svg class="svg-ramas" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <!-- Tallo principal -->
+                <path class="rama rama-1" d="M 50,100 C 60,80 35,60 50,40 C 65,20 40,5 40,5" />
+                <!-- Rama derecha (hacia Zero y Jack) -->
+                <path class="rama rama-2" d="M 45,70 C 70,65 85,50 75,25" />
+                <!-- Rama izquierda (hacia Victor y Emily) -->
+                <path class="rama rama-3" d="M 50,55 C 30,50 15,35 20,10" />
+                <!-- Zarcillos pequeños decorativos -->
+                <path class="rama rama-4" d="M 50,85 C 35,80 25,90 35,70" />
+                <path class="rama rama-4" d="M 60,35 C 75,30 80,45 65,45" />
+            </svg>
 
-            <!-- Flores del Ramo Híbrido -->
-            <div class="flor">🏵️</div>
-            <div class="flor">🌼</div>
-            <div class="flor">🥀</div>
-            <div class="flor">🏵️</div>
-            <div class="flor">🖤</div>
-            <div class="flor">🥀</div>
-            <div class="flor">🌼</div>
-            <div class="flor">🏵️</div>
-            <div class="flor" style="text-shadow: 0 0 20px #ff5500;">🏵️</div>
-            <div class="flor">🖤</div>
-            <div class="flor">🌼</div>
+            <!-- BROTES (Nacen sincronizados con las ramas) -->
+            <!-- Flores base -->
+            <div class="brote flor flotar-continuo">🏵️</div>
+            <div class="brote flor flotar-continuo">🥀</div>
+            <div class="brote flor flotar-continuo">🏵️</div>
+            <div class="brote flor flotar-continuo">🖤</div>
+
+            <!-- Personajes en la enredadera -->
+            <div class="brote flotar-continuo">
+                <div class="personaje">🐶👻</div>
+                <span class="nombre-mini">Zero & Scraps</span>
+            </div>
+            <div class="brote flotar-continuo">
+                <div class="personaje victor">🕸️🤵🏻‍♂️</div>
+                <span class="nombre-mini">Victor</span>
+            </div>
+            <div class="brote flotar-continuo">
+                <div class="personaje jack">💀🎃</div>
+                <span class="nombre-mini">Jack</span>
+            </div>
+            <div class="brote flotar-continuo">
+                <div class="personaje emily">👰🏻‍♀️🦋</div>
+                <span class="nombre-mini">Emily</span>
+            </div>
         </div>
 
         <p class="mensaje">
@@ -202,6 +240,7 @@
         </p>
     </div>
 
+    <!-- Script para partículas de fondo (Cempasúchil y Almas) -->
     <script>
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
@@ -210,18 +249,17 @@
 
         let particulas = [];
 
-        // Clase para las almas ascendentes y los pétalos descendentes
         class Particula {
             constructor() {
-                this.esPetalo = Math.random() > 0.4; // 60% pétalos, 40% almas brillantes
+                this.esPetalo = Math.random() > 0.4;
                 this.x = Math.random() * canvas.width;
                 this.y = this.esPetalo ? -20 : canvas.height + 20;
                 this.size = this.esPetalo ? Math.random() * 8 + 5 : Math.random() * 3 + 1;
-                this.velocidadY = this.esPetalo ? Math.random() * 2 + 1 : -(Math.random() * 1.5 + 0.5);
+                this.velocidadY = this.esPetalo ? Math.random() * 1.5 + 0.5 : -(Math.random() * 1 + 0.5);
                 this.velocidadX = (Math.random() - 0.5) * 1.5;
                 this.angulo = Math.random() * 360;
                 this.spin = (Math.random() - 0.5) * 5;
-                this.opacidad = Math.random() * 0.5 + 0.5;
+                this.opacidad = Math.random() * 0.5 + 0.3;
             }
 
             dibujar() {
@@ -230,22 +268,19 @@
                 ctx.translate(this.x, this.y);
                 
                 if (this.esPetalo) {
-                    // Dibujar pétalo de cempasúchil
                     ctx.rotate((this.angulo * Math.PI) / 180);
                     ctx.beginPath();
                     ctx.ellipse(0, 0, this.size, this.size / 2.5, 0, 0, Math.PI * 2);
-                    ctx.fillStyle = Math.random() > 0.3 ? '#ff8800' : '#ffcc00'; // Naranja o amarillo
+                    ctx.fillStyle = Math.random() > 0.3 ? '#ff8800' : '#ffcc00';
                     ctx.fill();
                 } else {
-                    // Dibujar alma brillante
                     ctx.beginPath();
                     ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = '#ccbbff'; // Tono fantasmal azul/morado
-                    ctx.shadowBlur = 15;
+                    ctx.fillStyle = '#ccbbff';
+                    ctx.shadowBlur = 10;
                     ctx.shadowColor = '#ffffff';
                     ctx.fill();
                 }
-                
                 ctx.restore();
             }
 
@@ -253,11 +288,8 @@
                 this.x += this.velocidadX;
                 this.y += this.velocidadY;
                 this.angulo += this.spin;
+                this.x += Math.sin(this.y * 0.01) * 0.5;
 
-                // Movimiento ondulante suave
-                this.x += Math.sin(this.y * 0.02) * 0.5;
-
-                // Resetear si salen de la pantalla
                 if (this.esPetalo && this.y > canvas.height + 20) {
                     this.y = -20;
                     this.x = Math.random() * canvas.width;
@@ -268,25 +300,18 @@
             }
         }
 
-        // Crear partículas iniciales
-        for (let i = 0; i < 80; i++) {
+        for (let i = 0; i < 60; i++) {
             particulas.push(new Particula());
         }
 
         function animar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particulas.forEach(p => {
-                p.actualizar();
-                p.dibujar();
-            });
-
+            particulas.forEach(p => { p.actualizar(); p.dibujar(); });
             requestAnimationFrame(animar);
         }
 
         animar();
 
-        // Ajustar al cambiar el tamaño de la ventana
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
