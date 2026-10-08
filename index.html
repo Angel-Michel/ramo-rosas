@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Enredadera de Key</title>
+    <title>La Enredadera Mágica de Key</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Mountains+of+Christmas:wght@700&display=swap');
 
@@ -14,7 +14,9 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(180deg, #05000a 0%, #17002b 40%, #3d004d 70%, #661a00 100%);
+            /* Fondo que respira */
+            background: radial-gradient(circle at 50% 50%, #290038 0%, #15001c 50%, #05000a 100%);
+            animation: respiracionFondo 8s ease-in-out infinite alternate;
             font-family: 'Cinzel', serif;
             color: #ffebd6;
         }
@@ -41,224 +43,301 @@
 
         .titulo {
             font-family: 'Mountains of Christmas', cursive;
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin: 10px 0;
-            color: #ff9900;
-            text-shadow: 0 0 15px #ff5500, 2px 2px 4px #000;
-            animation: pulseGlow 2s infinite alternate;
+            color: #ffb700;
+            text-shadow: 0 0 15px #ff6600, 0 0 30px #ff0000, 2px 2px 4px #000;
+            animation: pulseGlow 2.5s infinite alternate;
+            letter-spacing: 2px;
         }
 
-        /* Sistema de Enredadera */
         .enredadera-container {
             position: relative;
             width: 100%;
-            max-width: 350px;
+            max-width: 380px;
             aspect-ratio: 3 / 4;
             margin: 0 auto;
         }
 
+        /* Ramas con efecto de luz mágica */
         .svg-ramas {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            filter: drop-shadow(0px 0px 5px rgba(0,0,0,0.8));
+            filter: drop-shadow(0px 0px 8px rgba(255, 153, 0, 0.4));
         }
 
-        .rama {
+        .rama-oscura {
             fill: none;
-            stroke: #1a0d00;
-            stroke-width: 2.5;
+            stroke: #120600;
+            stroke-width: 6;
             stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
+            stroke-dasharray: 1500;
+            stroke-dashoffset: 1500;
             animation: crecerRama 4s ease-out forwards;
         }
 
-        .rama-1 { animation-delay: 0.2s; stroke-width: 3.5; }
-        .rama-2 { animation-delay: 1.5s; stroke: #261300; }
-        .rama-3 { animation-delay: 2.5s; stroke: #261300; }
-        .rama-4 { animation-delay: 2.0s; }
+        .rama-luz {
+            fill: none;
+            stroke: #ff9900;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-dasharray: 1500;
+            stroke-dashoffset: 1500;
+            opacity: 0.8;
+            animation: crecerRama 4s ease-out forwards, latidoLuz 2s infinite alternate 4s;
+        }
+
+        /* Tiempos de las ramas */
+        .r1 { animation-delay: 0.2s; }
+        .r2 { animation-delay: 1.5s; }
+        .r3 { animation-delay: 2.5s; }
 
         .brote {
             position: absolute;
             transform: translate(-50%, -50%) scale(0);
             opacity: 0;
-            animation: florecer 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: florecer 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
-        .flor { font-size: 2.5rem; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.8)); }
-
-        /* Estilos para los GIFs animados */
-        .gif-animado {
-            width: 80px; /* Tamaño del personaje */
-            height: auto;
-            border-radius: 10px;
-            /* Efecto de resplandor mágico para que se fundan con el fondo */
-            filter: drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.4));
-            animation: flotar-gif 3s ease-in-out infinite alternate;
+        /* Orbes Mágicos para los personajes */
+        .orb {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle, rgba(40,20,60,0.8) 0%, rgba(10,0,20,0.9) 100%);
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.2), 0 0 20px rgba(0,0,0,0.8);
+            border: 2px solid;
+            animation: flotar-orb 4s ease-in-out infinite alternate;
+            overflow: hidden;
         }
 
-        /* Resplandores personalizados */
-        .gif-jack { filter: drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.8)); }
-        .gif-emily { filter: drop-shadow(0px 0px 15px rgba(85, 204, 255, 0.8)); width: 85px; }
-        .gif-victor { filter: drop-shadow(0px 0px 15px rgba(170, 170, 170, 0.8)); }
-        .gif-zero { filter: drop-shadow(0px 0px 15px rgba(255, 153, 0, 0.8)); width: 70px; }
+        /* Colores por personaje */
+        .orb-zero { border-color: #ff9900; box-shadow: 0 0 25px rgba(255, 153, 0, 0.6); }
+        .orb-victor { border-color: #aaaaaa; box-shadow: 0 0 25px rgba(170, 170, 170, 0.6); }
+        .orb-jack { border-color: #ffffff; box-shadow: 0 0 25px rgba(255, 255, 255, 0.6); }
+        .orb-emily { border-color: #55ccff; box-shadow: 0 0 25px rgba(85, 204, 255, 0.6); width: 85px; height: 85px; }
+
+        /* Emoji de respaldo si falla la imagen */
+        .orb::after {
+            content: attr(data-emoji);
+            position: absolute;
+            font-size: 2.2rem;
+            z-index: 1;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+        }
+
+        .orb img {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajusta el GIF perfectamente al círculo */
+        }
+
+        .flor { font-size: 2.8rem; filter: drop-shadow(0px 0px 10px rgba(255, 100, 0, 0.8)); animation: flotar-flor 3s ease-in-out infinite alternate; }
 
         .nombre-mini {
-            font-family: 'Arial', sans-serif;
-            font-size: 0.7rem;
-            color: #ddd;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: #fff;
             margin-top: 8px;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 1px 1px 2px #000;
+            text-shadow: 0 0 5px #000, 0 0 10px #ff00ff;
+            font-weight: bold;
         }
 
-        /* Posiciones en las ramas */
-        .brote:nth-child(2) { top: 85%; left: 45%; animation-delay: 1.0s; } /* Flor base */
-        .brote:nth-child(3) { top: 70%; left: 35%; animation-delay: 1.5s; } /* Flor 2 */
-        .brote:nth-child(4) { top: 40%; left: 65%; animation-delay: 2.5s; } /* Flor 3 */
-        .brote:nth-child(5) { top: 15%; left: 40%; animation-delay: 3.5s; } /* Flor punta */
+        /* Posiciones exactas */
+        .brote.f1 { top: 85%; left: 45%; animation-delay: 1.0s; }
+        .brote.f2 { top: 68%; left: 32%; animation-delay: 1.8s; }
+        .brote.f3 { top: 40%; left: 68%; animation-delay: 2.6s; }
+        .brote.f4 { top: 15%; left: 38%; animation-delay: 3.5s; }
         
-        .brote:nth-child(6) { top: 65%; left: 75%; animation-delay: 2.2s; } /* Zero */
-        .brote:nth-child(7) { top: 50%; left: 20%; animation-delay: 2.8s; } /* Victor */
-        .brote:nth-child(8) { top: 25%; left: 75%; animation-delay: 3.4s; } /* Jack */
-        .brote:nth-child(9) { top: 10%; left: 20%; animation-delay: 4.0s; } /* Emily */
+        .brote.p1 { top: 65%; left: 80%; animation-delay: 2.2s; } /* Zero */
+        .brote.p2 { top: 52%; left: 15%; animation-delay: 2.8s; } /* Victor */
+        .brote.p3 { top: 25%; left: 78%; animation-delay: 3.4s; } /* Jack */
+        .brote.p4 { top: 10%; left: 20%; animation-delay: 4.0s; } /* Emily */
 
         .mensaje {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            padding: 15px 25px;
-            background: rgba(10, 0, 20, 0.7);
-            border: 1px solid rgba(255, 153, 0, 0.3);
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+            font-size: 1.15rem;
+            line-height: 1.6;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, rgba(20, 0, 30, 0.8), rgba(0, 0, 0, 0.9));
+            border: 1px solid rgba(255, 153, 0, 0.5);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 153, 0, 0.1);
             animation: fadeInMsg 5s ease-out forwards;
             opacity: 0;
             color: #ffdfba;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(5px);
         }
-        .resaltar { color: #ff9900; font-weight: bold; }
-        .resaltar-azul { color: #55ccff; font-weight: bold; }
+        .resaltar { color: #ffb700; font-weight: bold; text-shadow: 0 0 8px rgba(255, 183, 0, 0.6); }
+        .resaltar-azul { color: #55ccff; font-weight: bold; text-shadow: 0 0 8px rgba(85, 204, 255, 0.6); }
 
+        /* Animaciones */
         @keyframes crecerRama { to { stroke-dashoffset: 0; } }
-        @keyframes florecer {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            70% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        @keyframes latidoLuz {
+            0% { filter: drop-shadow(0 0 2px #ff5500); opacity: 0.6; }
+            100% { filter: drop-shadow(0 0 12px #ffaa00); opacity: 1; }
         }
-        @keyframes flotar-gif {
-            0% { transform: translateY(0px) rotate(-3deg); }
-            100% { transform: translateY(-8px) rotate(3deg); }
+        @keyframes florecer {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-20deg); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1) rotate(10deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+        }
+        @keyframes flotar-orb {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-12px); }
+        }
+        @keyframes flotar-flor {
+            0% { transform: translate(-50%, -50%) rotate(-5deg) scale(1); }
+            100% { transform: translate(-50%, -50%) rotate(5deg) scale(1.05); }
         }
         @keyframes pulseGlow {
-            0% { text-shadow: 0 0 10px #ff5500, 2px 2px 4px #000; }
-            100% { text-shadow: 0 0 20px #ffaa00, 0 0 10px #ff0000, 2px 2px 4px #000; }
+            0% { text-shadow: 0 0 10px #ff6600, 2px 2px 4px #000; transform: scale(1); }
+            100% { text-shadow: 0 0 25px #ffb700, 0 0 15px #ff0000, 2px 2px 4px #000; transform: scale(1.02); }
+        }
+        @keyframes respiracionFondo {
+            0% { background: radial-gradient(circle at 50% 50%, #290038 0%, #15001c 50%, #05000a 100%); }
+            100% { background: radial-gradient(circle at 50% 50%, #3d0045 0%, #1a0024 60%, #000000 100%); }
         }
         @keyframes fadeInMsg {
-            0%, 70% { opacity: 0; transform: translateY(20px); }
+            0%, 70% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
     <canvas id="magicCanvas"></canvas>
+    
     <div class="escenario">
         <h1 class="titulo">Para la pequeña Key 🦋</h1>
         
         <div class="enredadera-container">
+            <!-- Capas de la enredadera (Sombra y Luz) -->
             <svg class="svg-ramas" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path class="rama rama-1" d="M 50,100 C 60,80 35,60 50,40 C 65,20 40,5 40,5" />
-                <path class="rama rama-2" d="M 45,70 C 70,65 85,50 75,25" />
-                <path class="rama rama-3" d="M 50,55 C 30,50 15,35 20,10" />
-                <path class="rama rama-4" d="M 50,85 C 35,80 25,90 35,70" />
-                <path class="rama rama-4" d="M 60,35 C 75,30 80,45 65,45" />
+                <!-- Sombras oscuras -->
+                <path class="rama-oscura r1" d="M 50,105 C 65,80 30,60 50,40 C 70,20 35,5 35,5" />
+                <path class="rama-oscura r2" d="M 45,75 C 75,70 90,50 80,25" />
+                <path class="rama-oscura r3" d="M 50,55 C 25,50 10,35 15,10" />
+                <!-- Núcleo de luz mágico -->
+                <path class="rama-luz r1" d="M 50,105 C 65,80 30,60 50,40 C 70,20 35,5 35,5" />
+                <path class="rama-luz r2" d="M 45,75 C 75,70 90,50 80,25" />
+                <path class="rama-luz r3" d="M 50,55 C 25,50 10,35 15,10" />
             </svg>
 
             <!-- Flores -->
-            <div class="brote flor">🏵️</div>
-            <div class="brote flor">🥀</div>
-            <div class="brote flor">🏵️</div>
-            <div class="brote flor">🖤</div>
+            <div class="brote flor f1">🏵️</div>
+            <div class="brote flor f2">🥀</div>
+            <div class="brote flor f3">🏵️</div>
+            <div class="brote flor f4">🖤</div>
 
-            <!-- Personajes (GIFs) -->
-            <div class="brote">
-                <!-- Imagen de Zero -->
-                <img src="zero.gif" alt="Zero" class="gif-animado gif-zero">
-                <span class="nombre-mini">Zero & Scraps</span>
+            <!-- Personajes (Orbes mágicos) -->
+            <div class="brote p1">
+                <div class="orb orb-zero" data-emoji="🐶">
+                    <img src="zero.gif" alt="Zero" onerror="this.style.display='none'">
+                </div>
+                <span class="nombre-mini">Zero</span>
             </div>
-            <div class="brote">
-                <!-- Imagen de Victor -->
-                <img src="victor.gif" alt="Victor" class="gif-animado gif-victor">
+            
+            <div class="brote p2">
+                <div class="orb orb-victor" data-emoji="🤵🏻‍♂️">
+                    <img src="victor.gif" alt="Victor" onerror="this.style.display='none'">
+                </div>
                 <span class="nombre-mini">Victor</span>
             </div>
-            <div class="brote">
-                <!-- Imagen de Jack -->
-                <img src="jack.gif" alt="Jack" class="gif-animado gif-jack">
+            
+            <div class="brote p3">
+                <div class="orb orb-jack" data-emoji="💀">
+                    <img src="jack.gif" alt="Jack" onerror="this.style.display='none'">
+                </div>
                 <span class="nombre-mini">Jack</span>
             </div>
-            <div class="brote">
-                <!-- Imagen de Emily -->
-                <img src="emily.gif" alt="Emily" class="gif-animado gif-emily">
+            
+            <div class="brote p4">
+                <div class="orb orb-emily" data-emoji="👰🏻‍♀️">
+                    <img src="emily.gif" alt="Emily" onerror="this.style.display='none'">
+                </div>
                 <span class="nombre-mini">Emily</span>
             </div>
         </div>
 
         <p class="mensaje">
             En este mundo y en el otro, <span class="resaltar">mi cariño por ti es eterno</span>.<br>
-            Que las flores de cempasúchil guíen siempre tu camino, y al igual que una <span class="resaltar-azul">mariposa azul</span>, nunca pierdas esa magia que te hace única. Feliz Día de Muertos. 🕯️
+            Que las flores de cempasúchil guíen siempre tu camino, y al igual que una <span class="resaltar-azul">mariposa azul</span>, nunca pierdas esa magia que te hace única.<br>🕯️ Feliz Día de Muertos 🕯️
         </p>
     </div>
 
-    <!-- Script de partículas (sin cambios) -->
     <script>
+        // Sistema de partículas mejorado (Almas brillantes y Pétalos)
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+
         let particulas = [];
+
         class Particula {
             constructor() {
-                this.esPetalo = Math.random() > 0.4;
+                this.esPetalo = Math.random() > 0.5;
                 this.x = Math.random() * canvas.width;
                 this.y = this.esPetalo ? -20 : canvas.height + 20;
-                this.size = this.esPetalo ? Math.random() * 8 + 5 : Math.random() * 3 + 1;
-                this.velocidadY = this.esPetalo ? Math.random() * 1.5 + 0.5 : -(Math.random() * 1 + 0.5);
+                this.size = this.esPetalo ? Math.random() * 8 + 4 : Math.random() * 3 + 1.5;
+                this.velocidadY = this.esPetalo ? Math.random() * 1.5 + 0.5 : -(Math.random() * 1.5 + 0.5);
                 this.velocidadX = (Math.random() - 0.5) * 1.5;
                 this.angulo = Math.random() * 360;
-                this.spin = (Math.random() - 0.5) * 5;
-                this.opacidad = Math.random() * 0.5 + 0.3;
+                this.spin = (Math.random() - 0.5) * 4;
+                this.opacidad = Math.random() * 0.6 + 0.4;
+                this.brillo = Math.random() * 0.05;
+                this.faseBrillo = Math.random() * Math.PI * 2;
             }
+
             dibujar() {
                 ctx.save();
-                ctx.globalAlpha = this.opacidad;
+                
+                // Efecto de parpadeo suave
+                let opacidadActual = this.opacidad + Math.sin(Date.now() * 0.002 + this.faseBrillo) * 0.2;
+                ctx.globalAlpha = Math.max(0.1, Math.min(1, opacidadActual));
+                
                 ctx.translate(this.x, this.y);
+                
                 if (this.esPetalo) {
                     ctx.rotate((this.angulo * Math.PI) / 180);
                     ctx.beginPath();
                     ctx.ellipse(0, 0, this.size, this.size / 2.5, 0, 0, Math.PI * 2);
-                    ctx.fillStyle = Math.random() > 0.3 ? '#ff8800' : '#ffcc00';
+                    ctx.fillStyle = Math.random() > 0.5 ? '#ff7700' : '#ffaa00';
+                    ctx.shadowBlur = 5;
+                    ctx.shadowColor = '#ff5500';
                     ctx.fill();
                 } else {
                     ctx.beginPath();
                     ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = '#ccbbff';
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = '#ffffff';
+                    // Colores de las almas: Blancas, púrpuras o celestes
+                    let colorAlma = ['#ffffff', '#e6ccff', '#ccf5ff'][Math.floor(Math.random() * 3)];
+                    ctx.fillStyle = colorAlma;
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = colorAlma;
                     ctx.fill();
                 }
                 ctx.restore();
             }
+
             actualizar() {
                 this.x += this.velocidadX;
                 this.y += this.velocidadY;
                 this.angulo += this.spin;
-                this.x += Math.sin(this.y * 0.01) * 0.5;
+                this.x += Math.sin(this.y * 0.01) * 0.8; // Movimiento ondulante
+
                 if (this.esPetalo && this.y > canvas.height + 20) {
                     this.y = -20;
                     this.x = Math.random() * canvas.width;
@@ -268,13 +347,19 @@
                 }
             }
         }
-        for (let i = 0; i < 60; i++) { particulas.push(new Particula()); }
+
+        for (let i = 0; i < 80; i++) {
+            particulas.push(new Particula());
+        }
+
         function animar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particulas.forEach(p => { p.actualizar(); p.dibujar(); });
             requestAnimationFrame(animar);
         }
+
         animar();
+
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
