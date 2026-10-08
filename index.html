@@ -14,7 +14,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* Fondo que respira */
             background: radial-gradient(circle at 50% 50%, #290038 0%, #15001c 50%, #05000a 100%);
             animation: respiracionFondo 8s ease-in-out infinite alternate;
             font-family: 'Cinzel', serif;
@@ -59,7 +58,6 @@
             margin: 0 auto;
         }
 
-        /* Ramas con efecto de luz mágica */
         .svg-ramas {
             position: absolute;
             top: 0; left: 0;
@@ -88,7 +86,6 @@
             animation: crecerRama 4s ease-out forwards, latidoLuz 2s infinite alternate 4s;
         }
 
-        /* Tiempos de las ramas */
         .r1 { animation-delay: 0.2s; }
         .r2 { animation-delay: 1.5s; }
         .r3 { animation-delay: 2.5s; }
@@ -104,7 +101,6 @@
             justify-content: center;
         }
 
-        /* Orbes Mágicos para los personajes */
         .orb {
             width: 75px;
             height: 75px;
@@ -120,13 +116,11 @@
             overflow: hidden;
         }
 
-        /* Colores por personaje */
         .orb-zero { border-color: #ff9900; box-shadow: 0 0 25px rgba(255, 153, 0, 0.6); }
         .orb-victor { border-color: #aaaaaa; box-shadow: 0 0 25px rgba(170, 170, 170, 0.6); }
         .orb-jack { border-color: #ffffff; box-shadow: 0 0 25px rgba(255, 255, 255, 0.6); }
         .orb-emily { border-color: #55ccff; box-shadow: 0 0 25px rgba(85, 204, 255, 0.6); width: 85px; height: 85px; }
 
-        /* Emoji de respaldo si falla la imagen */
         .orb::after {
             content: attr(data-emoji);
             position: absolute;
@@ -140,7 +134,7 @@
             z-index: 2;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ajusta el GIF perfectamente al círculo */
+            object-fit: cover;
         }
 
         .flor { font-size: 2.8rem; filter: drop-shadow(0px 0px 10px rgba(255, 100, 0, 0.8)); animation: flotar-flor 3s ease-in-out infinite alternate; }
@@ -156,35 +150,45 @@
             font-weight: bold;
         }
 
-        /* Posiciones exactas */
         .brote.f1 { top: 85%; left: 45%; animation-delay: 1.0s; }
         .brote.f2 { top: 68%; left: 32%; animation-delay: 1.8s; }
         .brote.f3 { top: 40%; left: 68%; animation-delay: 2.6s; }
         .brote.f4 { top: 15%; left: 38%; animation-delay: 3.5s; }
         
-        .brote.p1 { top: 65%; left: 80%; animation-delay: 2.2s; } /* Zero */
-        .brote.p2 { top: 52%; left: 15%; animation-delay: 2.8s; } /* Victor */
-        .brote.p3 { top: 25%; left: 78%; animation-delay: 3.4s; } /* Jack */
-        .brote.p4 { top: 10%; left: 20%; animation-delay: 4.0s; } /* Emily */
+        .brote.p1 { top: 65%; left: 80%; animation-delay: 2.2s; }
+        .brote.p2 { top: 52%; left: 15%; animation-delay: 2.8s; }
+        .brote.p3 { top: 25%; left: 78%; animation-delay: 3.4s; }
+        .brote.p4 { top: 10%; left: 20%; animation-delay: 4.0s; }
 
-        .mensaje {
-            font-size: 1.15rem;
-            line-height: 1.6;
-            padding: 20px 30px;
-            background: linear-gradient(135deg, rgba(20, 0, 30, 0.8), rgba(0, 0, 0, 0.9));
-            border: 1px solid rgba(255, 153, 0, 0.5);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 153, 0, 0.1);
-            animation: fadeInMsg 5s ease-out forwards;
-            opacity: 0;
+        /* NUEVO MENSAJE SUTIL Y FLOTANTE */
+        .mensaje-sutil {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            line-height: 1.8;
             color: #ffdfba;
-            margin-bottom: 10px;
-            backdrop-filter: blur(5px);
+            text-align: center;
+            opacity: 0; /* Inicia invisible */
+            /* Aparece suavemente después de 4.5 segundos */
+            animation: suspiroMágico 3s ease-in-out 4.5s forwards; 
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 153, 0, 0.4);
+            margin-top: 15px;
+            padding: 0 20px;
         }
-        .resaltar { color: #ffb700; font-weight: bold; text-shadow: 0 0 8px rgba(255, 183, 0, 0.6); }
-        .resaltar-azul { color: #55ccff; font-weight: bold; text-shadow: 0 0 8px rgba(85, 204, 255, 0.6); }
 
-        /* Animaciones */
+        .mensaje-sutil .resaltar {
+            color: #ffb700;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .firma {
+            font-size: 0.9rem;
+            color: #55ccff;
+            letter-spacing: 1px;
+            display: block;
+            margin-top: 5px;
+        }
+
         @keyframes crecerRama { to { stroke-dashoffset: 0; } }
         @keyframes latidoLuz {
             0% { filter: drop-shadow(0 0 2px #ff5500); opacity: 0.6; }
@@ -211,8 +215,9 @@
             0% { background: radial-gradient(circle at 50% 50%, #290038 0%, #15001c 50%, #05000a 100%); }
             100% { background: radial-gradient(circle at 50% 50%, #3d0045 0%, #1a0024 60%, #000000 100%); }
         }
-        @keyframes fadeInMsg {
-            0%, 70% { opacity: 0; transform: translateY(30px); }
+        /* Animación para el texto delicado */
+        @keyframes suspiroMágico {
+            0% { opacity: 0; transform: translateY(15px); }
             100% { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -224,25 +229,21 @@
         <h1 class="titulo">Para la pequeña Key 🦋</h1>
         
         <div class="enredadera-container">
-            <!-- Capas de la enredadera (Sombra y Luz) -->
             <svg class="svg-ramas" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <!-- Sombras oscuras -->
                 <path class="rama-oscura r1" d="M 50,105 C 65,80 30,60 50,40 C 70,20 35,5 35,5" />
                 <path class="rama-oscura r2" d="M 45,75 C 75,70 90,50 80,25" />
                 <path class="rama-oscura r3" d="M 50,55 C 25,50 10,35 15,10" />
-                <!-- Núcleo de luz mágico -->
+                
                 <path class="rama-luz r1" d="M 50,105 C 65,80 30,60 50,40 C 70,20 35,5 35,5" />
                 <path class="rama-luz r2" d="M 45,75 C 75,70 90,50 80,25" />
                 <path class="rama-luz r3" d="M 50,55 C 25,50 10,35 15,10" />
             </svg>
 
-            <!-- Flores -->
             <div class="brote flor f1">🏵️</div>
             <div class="brote flor f2">🥀</div>
             <div class="brote flor f3">🏵️</div>
             <div class="brote flor f4">🖤</div>
 
-            <!-- Personajes (Orbes mágicos) -->
             <div class="brote p1">
                 <div class="orb orb-zero" data-emoji="🐶">
                     <img src="zero.gif" alt="Zero" onerror="this.style.display='none'">
@@ -272,14 +273,14 @@
             </div>
         </div>
 
-        <p class="mensaje">
-            En este mundo y en el otro, <span class="resaltar">mi cariño por ti es eterno</span>.<br>
-            Que las flores de cempasúchil guíen siempre tu camino, y al igual que una <span class="resaltar-azul">mariposa azul</span>, nunca pierdas esa magia que te hace única.<br>🕯️ Feliz Día de Muertos 🕯️
+        <!-- EL NUEVO MENSAJE AQUÍ -->
+        <p class="mensaje-sutil">
+            "Mi cariño por ti es <span class="resaltar">eterno</span>."<br>
+            <span class="firma">Feliz Día de Muertos 🕯️</span>
         </p>
     </div>
 
     <script>
-        // Sistema de partículas mejorado (Almas brillantes y Pétalos)
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -304,11 +305,8 @@
 
             dibujar() {
                 ctx.save();
-                
-                // Efecto de parpadeo suave
                 let opacidadActual = this.opacidad + Math.sin(Date.now() * 0.002 + this.faseBrillo) * 0.2;
                 ctx.globalAlpha = Math.max(0.1, Math.min(1, opacidadActual));
-                
                 ctx.translate(this.x, this.y);
                 
                 if (this.esPetalo) {
@@ -322,7 +320,6 @@
                 } else {
                     ctx.beginPath();
                     ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                    // Colores de las almas: Blancas, púrpuras o celestes
                     let colorAlma = ['#ffffff', '#e6ccff', '#ccf5ff'][Math.floor(Math.random() * 3)];
                     ctx.fillStyle = colorAlma;
                     ctx.shadowBlur = 15;
@@ -336,7 +333,7 @@
                 this.x += this.velocidadX;
                 this.y += this.velocidadY;
                 this.angulo += this.spin;
-                this.x += Math.sin(this.y * 0.01) * 0.8; // Movimiento ondulante
+                this.x += Math.sin(this.y * 0.01) * 0.8;
 
                 if (this.esPetalo && this.y > canvas.height + 20) {
                     this.y = -20;
