@@ -114,7 +114,11 @@
             border: 2px solid;
             animation: flotar-orb 4s ease-in-out infinite alternate;
             overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow 0.3s, transform 0.3s;
         }
+
+        .orb:active { transform: scale(0.9); }
 
         .orb-zero { border-color: #ff9900; box-shadow: 0 0 25px rgba(255, 153, 0, 0.6); }
         .orb-victor { border-color: #aaaaaa; box-shadow: 0 0 25px rgba(170, 170, 170, 0.6); }
@@ -160,66 +164,101 @@
         .brote.p3 { top: 25%; left: 78%; animation-delay: 3.4s; }
         .brote.p4 { top: 10%; left: 20%; animation-delay: 4.0s; }
 
-        /* NUEVO MENSAJE SUTIL Y FLOTANTE */
         .mensaje-sutil {
             font-family: 'Cinzel', serif;
             font-size: 1.2rem;
             line-height: 1.8;
             color: #ffdfba;
             text-align: center;
-            opacity: 0; /* Inicia invisible */
-            /* Aparece suavemente después de 4.5 segundos */
+            opacity: 0;
             animation: suspiroMágico 3s ease-in-out 4.5s forwards; 
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 153, 0, 0.4);
             margin-top: 15px;
             padding: 0 20px;
         }
+        .mensaje-sutil .resaltar { color: #ffb700; font-weight: bold; font-style: italic; }
+        .firma { font-size: 0.9rem; color: #55ccff; letter-spacing: 1px; display: block; margin-top: 5px; }
 
-        .mensaje-sutil .resaltar {
-            color: #ffb700;
+        /* --- SISTEMA DE CARTAS MÁGICAS (MODAL) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .modal-overlay.activo {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-carta {
+            background: linear-gradient(135deg, #1f002e 0%, #0a0014 100%);
+            border: 2px solid;
+            border-radius: 15px;
+            padding: 30px;
+            width: 85%;
+            max-width: 400px;
+            text-align: center;
+            transform: scale(0.8) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .modal-overlay.activo .modal-carta { transform: scale(1) translateY(0); }
+
+        .cerrar-modal {
+            position: absolute;
+            top: -15px; right: -15px;
+            width: 35px; height: 35px;
+            background: #000;
+            border: 2px solid #ff9900;
+            border-radius: 50%;
+            color: #ff9900;
+            font-family: sans-serif;
+            font-size: 1.2rem;
             font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ff9900;
+        }
+
+        .texto-carta {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #fff;
+            text-shadow: 0 2px 4px #000;
+        }
+
+        .texto-carta span.nota {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #b3b3b3;
             font-style: italic;
         }
 
-        .firma {
-            font-size: 0.9rem;
-            color: #55ccff;
-            letter-spacing: 1px;
-            display: block;
-            margin-top: 5px;
-        }
-
+        /* Animaciones */
         @keyframes crecerRama { to { stroke-dashoffset: 0; } }
-        @keyframes latidoLuz {
-            0% { filter: drop-shadow(0 0 2px #ff5500); opacity: 0.6; }
-            100% { filter: drop-shadow(0 0 12px #ffaa00); opacity: 1; }
-        }
-        @keyframes florecer {
-            0% { transform: translate(-50%, -50%) scale(0) rotate(-20deg); opacity: 0; }
-            70% { transform: translate(-50%, -50%) scale(1.1) rotate(10deg); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
-        }
-        @keyframes flotar-orb {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-12px); }
-        }
-        @keyframes flotar-flor {
-            0% { transform: translate(-50%, -50%) rotate(-5deg) scale(1); }
-            100% { transform: translate(-50%, -50%) rotate(5deg) scale(1.05); }
-        }
-        @keyframes pulseGlow {
-            0% { text-shadow: 0 0 10px #ff6600, 2px 2px 4px #000; transform: scale(1); }
-            100% { text-shadow: 0 0 25px #ffb700, 0 0 15px #ff0000, 2px 2px 4px #000; transform: scale(1.02); }
-        }
-        @keyframes respiracionFondo {
-            0% { background: radial-gradient(circle at 50% 50%, #290038 0%, #15001c 50%, #05000a 100%); }
-            100% { background: radial-gradient(circle at 50% 50%, #3d0045 0%, #1a0024 60%, #000000 100%); }
-        }
-        /* Animación para el texto delicado */
-        @keyframes suspiroMágico {
-            0% { opacity: 0; transform: translateY(15px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes latidoLuz { 0% { filter: drop-shadow(0 0 2px #ff5500); opacity: 0.6; } 100% { filter: drop-shadow(0 0 12px #ffaa00); opacity: 1; } }
+        @keyframes florecer { 0% { transform: translate(-50%, -50%) scale(0) rotate(-20deg); opacity: 0; } 70% { transform: translate(-50%, -50%) scale(1.1) rotate(10deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } }
+        @keyframes flotar-orb { 0% { transform: translateY(0px); } 100% { transform: translateY(-12px); } }
+        @keyframes flotar-flor { 0% { transform: translate(-50%, -50%) rotate(-5deg) scale(1); } 100% { transform: translate(-50%, -50%) rotate(5deg) scale(1.05); } }
+        @keyframes pulseGlow { 0% { text-shadow: 0 0 10px #ff6600, 2px 2px 4px #000; transform: scale(1); } 100% { text-shadow: 0 0 25px #ffb700, 0 0 15px #ff0000, 2px 2px 4px #000; transform: scale(1.02); } }
+        @keyframes respiracionFondo { 0% { background: radial-gradient(circle at 50% 50%, #290038 0%, #15001c 50%, #05000a 100%); } 100% { background: radial-gradient(circle at 50% 50%, #3d0045 0%, #1a0024 60%, #000000 100%); } }
+        @keyframes suspiroMágico { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -233,7 +272,6 @@
                 <path class="rama-oscura r1" d="M 50,105 C 65,80 30,60 50,40 C 70,20 35,5 35,5" />
                 <path class="rama-oscura r2" d="M 45,75 C 75,70 90,50 80,25" />
                 <path class="rama-oscura r3" d="M 50,55 C 25,50 10,35 15,10" />
-                
                 <path class="rama-luz r1" d="M 50,105 C 65,80 30,60 50,40 C 70,20 35,5 35,5" />
                 <path class="rama-luz r2" d="M 45,75 C 75,70 90,50 80,25" />
                 <path class="rama-luz r3" d="M 50,55 C 25,50 10,35 15,10" />
@@ -244,28 +282,29 @@
             <div class="brote flor f3">🏵️</div>
             <div class="brote flor f4">🖤</div>
 
-            <div class="brote p1">
+            <!-- Personajes con eventos OnClick -->
+            <div class="brote p1" onclick="mostrarMensaje('zero')">
                 <div class="orb orb-zero" data-emoji="🐶">
                     <img src="zero.gif" alt="Zero" onerror="this.style.display='none'">
                 </div>
                 <span class="nombre-mini">Zero</span>
             </div>
             
-            <div class="brote p2">
+            <div class="brote p2" onclick="mostrarMensaje('victor')">
                 <div class="orb orb-victor" data-emoji="🤵🏻‍♂️">
                     <img src="victor.gif" alt="Victor" onerror="this.style.display='none'">
                 </div>
                 <span class="nombre-mini">Victor</span>
             </div>
             
-            <div class="brote p3">
+            <div class="brote p3" onclick="mostrarMensaje('jack')">
                 <div class="orb orb-jack" data-emoji="💀">
                     <img src="jack.gif" alt="Jack" onerror="this.style.display='none'">
                 </div>
                 <span class="nombre-mini">Jack</span>
             </div>
             
-            <div class="brote p4">
+            <div class="brote p4" onclick="mostrarMensaje('emily')">
                 <div class="orb orb-emily" data-emoji="👰🏻‍♀️">
                     <img src="emily.gif" alt="Emily" onerror="this.style.display='none'">
                 </div>
@@ -273,21 +312,78 @@
             </div>
         </div>
 
-        <!-- EL NUEVO MENSAJE AQUÍ -->
         <p class="mensaje-sutil">
             "Mi cariño por ti es <span class="resaltar">eterno</span>."<br>
             <span class="firma">Feliz Día de Muertos 🕯️</span>
         </p>
     </div>
 
+    <!-- EL MODAL (Pantalla emergente) -->
+    <div id="modalMágico" class="modal-overlay" onclick="cerrarMensaje(event)">
+        <div class="modal-carta" id="cajaCarta">
+            <div class="cerrar-modal" onclick="cerrarMensaje(event, true)">X</div>
+            <div id="textoMensaje" class="texto-carta"></div>
+        </div>
+    </div>
+
     <script>
+        // --- BASE DE DATOS DE MENSAJES PARA KEY ---
+        const mensajesPersonajes = {
+            'jack': {
+                texto: "¡Por mis huesos que eres increíble, Key! 🎃<br>He viajado por la Ciudad de Halloween buscando la verdadera magia, pero ninguna se compara con la luz que tú irradias.",
+                nota: "(Nunca pierdas esa chispa que te hace tan especial).",
+                borde: "#ffffff", sombra: "rgba(255, 255, 255, 0.6)"
+            },
+            'emily': {
+                texto: "Te ofrezco mi corazón eterno... 🦋<br>Las mariposas azules siempre te acompañarán, Key, recordándote que la belleza verdadera nunca se desvanece.",
+                nota: "(Estaré cuidándote bajo la luz de la luna).",
+                borde: "#55ccff", sombra: "rgba(85, 204, 255, 0.6)"
+            },
+            'victor': {
+                texto: "Con esta mano disiparé tus penas... 🕸️<br>Eres la melodía más hermosa, Key. Nunca dejes que tu valentía se apague.",
+                nota: "(Incluso en la oscuridad, tú pones la música).",
+                borde: "#aaaaaa", sombra: "rgba(170, 170, 170, 0.6)"
+            },
+            'zero': {
+                texto: "¡Guau, guau! 🦴✨<br>Aunque seamos fantasmitas, nuestras naricitas brillantes siempre te guiarán.",
+                nota: "(Siempre te acompañaremos para cuidarte en la oscuridad, pequeña Key).",
+                borde: "#ff9900", sombra: "rgba(255, 153, 0, 0.6)"
+            }
+        };
+
+        const modal = document.getElementById('modalMágico');
+        const cajaCarta = document.getElementById('cajaCarta');
+        const textoMensaje = document.getElementById('textoMensaje');
+
+        // Función para abrir la carta
+        function mostrarMensaje(personaje) {
+            const data = mensajesPersonajes[personaje];
+            
+            // Inyectar el texto
+            textoMensaje.innerHTML = `${data.texto} <span class="nota">${data.nota}</span>`;
+            
+            // Cambiar los colores de la carta según el personaje
+            cajaCarta.style.borderColor = data.borde;
+            cajaCarta.style.boxShadow = `0 15px 40px rgba(0,0,0,0.9), 0 0 25px ${data.sombra}, inset 0 0 20px rgba(255,255,255,0.1)`;
+            
+            // Mostrar modal
+            modal.classList.add('activo');
+        }
+
+        // Función para cerrar la carta (ya sea clicando la X o el fondo negro)
+        function cerrarMensaje(evento, forzarCierre = false) {
+            if (forzarCierre || evento.target === modal) {
+                modal.classList.remove('activo');
+            }
+        }
+
+        // --- SISTEMA DE PARTÍCULAS (Sin Cambios) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
         let particulas = [];
-
         class Particula {
             constructor() {
                 this.esPetalo = Math.random() > 0.5;
@@ -299,10 +395,8 @@
                 this.angulo = Math.random() * 360;
                 this.spin = (Math.random() - 0.5) * 4;
                 this.opacidad = Math.random() * 0.6 + 0.4;
-                this.brillo = Math.random() * 0.05;
                 this.faseBrillo = Math.random() * Math.PI * 2;
             }
-
             dibujar() {
                 ctx.save();
                 let opacidadActual = this.opacidad + Math.sin(Date.now() * 0.002 + this.faseBrillo) * 0.2;
@@ -328,33 +422,26 @@
                 }
                 ctx.restore();
             }
-
             actualizar() {
                 this.x += this.velocidadX;
                 this.y += this.velocidadY;
                 this.angulo += this.spin;
                 this.x += Math.sin(this.y * 0.01) * 0.8;
-
                 if (this.esPetalo && this.y > canvas.height + 20) {
-                    this.y = -20;
-                    this.x = Math.random() * canvas.width;
+                    this.y = -20; this.x = Math.random() * canvas.width;
                 } else if (!this.esPetalo && this.y < -20) {
-                    this.y = canvas.height + 20;
-                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height + 20; this.x = Math.random() * canvas.width;
                 }
             }
         }
 
-        for (let i = 0; i < 80; i++) {
-            particulas.push(new Particula());
-        }
+        for (let i = 0; i < 80; i++) { particulas.push(new Particula()); }
 
         function animar() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particulas.forEach(p => { p.actualizar(); p.dibujar(); });
             requestAnimationFrame(animar);
         }
-
         animar();
 
         window.addEventListener('resize', () => {
