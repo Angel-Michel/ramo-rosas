@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KEY - Tim Burton Ultimate Gothic Mural</title>
+<title>KEY - Tim Burton Canvas Graffiti</title>
 <style>
   body{margin:0;background:#030406;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:monospace;color:#a0b0c0}
   #wall{position:relative;width:95vw;max-width:850px;aspect-ratio:16/9;background:#050608;border:8px solid #111;box-shadow:0 0 70px rgba(123,31,162,0.5);overflow:hidden;border-radius:14px}
@@ -34,17 +34,16 @@ function resize() {
 
 let animFrame = 0;
 let bats = [
-  {x: 650, y: 100, speed: 1.2, size: 10, wing: 0},
-  {x: 750, y: 70, speed: 1.5, size: 8, wing: 2},
-  {x: 500, y: 140, speed: 0.9, size: 12, wing: 1}
+  {x: 650, y: 90, speed: 1.2, size: 10, wing: 0},
+  {x: 750, y: 60, speed: 1.5, size: 8, wing: 2},
+  {x: 500, y: 130, speed: 0.9, size: 12, wing: 1}
 ];
 
-// Dibujar el fondo completo de Tim Burton
 function drawBackground(time) {
   const w = bg.width, h = bg.height;
   bCtx.clearRect(0, 0, w, h);
   
-  // 1. Cielo nocturno con degradado profundo
+  // 1. Cielo nocturno
   let grad = bCtx.createLinearGradient(0, 0, 0, h);
   grad.addColorStop(0, '#020305');
   grad.addColorStop(0.45, '#0b0c18');
@@ -74,107 +73,87 @@ function drawBackground(time) {
   bCtx.closePath();
   bCtx.fill();
 
-  // Líneas espirales características en la colina
-  bCtx.strokeStyle = '#020203';
-  bCtx.lineWidth = 4;
-  bCtx.beginPath();
-  bCtx.moveTo(w * 0.65, h * 0.52);
-  bCtx.quadraticCurveTo(w * 0.68, h * 0.45, w * 0.72, h * 0.36);
-  bCtx.stroke();
-
-  // 4. Árboles góticos nudosos a los costados
+  // 4. Árboles góticos
   bCtx.strokeStyle = '#020304';
-  bCtx.lineWidth = 16;
+  bCtx.lineWidth = 14;
   bCtx.lineCap = 'round';
-  // Árbol izquierdo
   bCtx.beginPath();
   bCtx.moveTo(w * 0.05, h * 0.6);
   bCtx.lineTo(w * 0.08, h * 0.35);
   bCtx.bezierCurveTo(w * 0.01, h * 0.25, w * 0.12, h * 0.18, w * 0.04, h * 0.08);
   bCtx.stroke();
-  // Ramas secundarias izq
-  bCtx.lineWidth = 7;
-  bCtx.beginPath();
-  bCtx.moveTo(w * 0.07, h * 0.28); bCtx.lineTo(w * 0.01, h * 0.2);
-  bCtx.moveTo(w * 0.08, h * 0.22); bCtx.lineTo(w * 0.14, h * 0.12);
-  bCtx.stroke();
 
   let floatOffset = Math.sin(time * 0.035) * 6;
 
-  // 5. JACK SKELLINGTON (Ilustración gótica detallada a la izquierda)
+  // 5. JACK SKELLINGTON
   bCtx.save();
-  let jx = w * 0.22, jy = h * 0.28 + floatOffset;
+  let jx = w * 0.20, jy = h * 0.26 + floatOffset;
   
-  // Traje a rayas verticales
+  // Traje a rayas
   bCtx.fillStyle = '#08080d';
-  bCtx.beginPath(); bCtx.ellipse(jx, jy + 85, 40, 70, 0, 0, Math.PI * 2); bCtx.fill();
+  bCtx.beginPath(); bCtx.ellipse(jx, jy + 85, 36, 68, 0, 0, Math.PI * 2); bCtx.fill();
   bCtx.strokeStyle = '#1a1c24'; bCtx.lineWidth = 2;
-  for(let i = -25; i <= 25; i += 10) {
-    bCtx.beginPath(); bCtx.moveTo(jx + i, jy + 30); bCtx.lineTo(jx + i, jy + 140); bCtx.stroke();
+  for(let i = -20; i <= 20; i += 8) {
+    bCtx.beginPath(); bCtx.moveTo(jx + i, jy + 30); bCtx.lineTo(jx + i, jy + 130); bCtx.stroke();
   }
 
-  // Pajarita de murciélago
+  // Pajarita murciélago
   bCtx.fillStyle = '#020204';
   bCtx.beginPath(); 
   bCtx.moveTo(jx, jy + 35); 
-  bCtx.lineTo(jx - 35, jy + 20); bCtx.lineTo(jx - 22, jy + 50); 
+  bCtx.lineTo(jx - 32, jy + 20); bCtx.lineTo(jx - 20, jy + 48); 
   bCtx.lineTo(jx, jy + 35); 
-  bCtx.lineTo(jx + 22, jy + 50); bCtx.lineTo(jx + 35, jy + 20); 
+  bCtx.lineTo(jx + 20, jy + 48); bCtx.lineTo(jx + 32, jy + 20); 
   bCtx.closePath(); bCtx.fill();
   
-  // Calavera estilizada
+  // Calavera
   bCtx.fillStyle = '#f0f4f8';
-  bCtx.beginPath(); bCtx.arc(jx, jy, 38, 0, Math.PI * 2); bCtx.fill();
+  bCtx.beginPath(); bCtx.arc(jx, jy, 36, 0, Math.PI * 2); bCtx.fill();
   bCtx.strokeStyle = '#020203'; bCtx.lineWidth = 3; bCtx.stroke();
 
-  // Ojos grandes profundos
+  // Ojos de Jack
   bCtx.fillStyle = '#020203';
   bCtx.beginPath(); 
-  bCtx.ellipse(jx - 12, jy - 4, 9, 13, -0.15, 0, Math.PI * 2); 
-  bCtx.ellipse(jx + 12, jy - 4, 9, 13, 0.15, 0, Math.PI * 2); 
+  bCtx.ellipse(jx - 11, jy - 4, 8, 12, -0.15, 0, Math.PI * 2); 
+  bCtx.ellipse(jx + 11, jy - 4, 8, 12, 0.15, 0, Math.PI * 2); 
   bCtx.fill();
   
-  // Sonrisa ancha cosida
+  // Sonrisa cosida
   bCtx.lineWidth = 3; bCtx.strokeStyle = '#020203';
-  bCtx.beginPath(); bCtx.arc(jx, jy + 10, 20, 0.1 * Math.PI, 0.9 * Math.PI); bCtx.stroke();
-  for(let i = -14; i <= 14; i += 5) {
+  bCtx.beginPath(); bCtx.arc(jx, jy + 10, 18, 0.1 * Math.PI, 0.9 * Math.PI); bCtx.stroke();
+  for(let i = -12; i <= 12; i += 5) {
     bCtx.beginPath(); bCtx.moveTo(jx + i, jy + 4); bCtx.lineTo(jx + i, jy + 18); bCtx.stroke();
   }
   bCtx.restore();
 
-  // 6. SALLY (Ilustración gótica detallada a la derecha)
+  // 6. SALLY
   bCtx.save();
-  let sx = w * 0.85, sy = h * 0.32 - floatOffset;
+  let sx = w * 0.86, sy = h * 0.30 - floatOffset;
   
-  // Vestido de parches con texturas
+  // Vestido de parches
   bCtx.fillStyle = '#311b92';
-  bCtx.beginPath(); bCtx.ellipse(sx, sy + 75, 36, 55, 0, 0, Math.PI * 2); bCtx.fill();
+  bCtx.beginPath(); bCtx.ellipse(sx, sy + 70, 32, 50, 0, 0, Math.PI * 2); bCtx.fill();
   bCtx.strokeStyle = '#b71c1c'; bCtx.lineWidth = 2;
-  bCtx.strokeRect(sx - 20, sy + 45, 18, 22);
-  bCtx.strokeRect(sx + 2, sy + 60, 16, 25);
+  bCtx.strokeRect(sx - 18, sy + 40, 16, 20);
 
-  // Cabello rojo largo característico
+  // Cabello rojo
   bCtx.fillStyle = '#b71c1c';
   bCtx.beginPath();
-  bCtx.moveTo(sx - 30, sy - 22); bCtx.lineTo(sx + 30, sy - 22);
-  bCtx.lineTo(sx + 44, sy + 45); bCtx.lineTo(sx - 44, sy + 45);
+  bCtx.moveTo(sx - 26, sy - 20); bCtx.lineTo(sx + 26, sy - 20);
+  bCtx.lineTo(sx + 40, sy + 40); bCtx.lineTo(sx - 40, sy + 40);
   bCtx.closePath(); bCtx.fill();
   
-  // Cara pálida
+  // Cara
   bCtx.fillStyle = '#e8f5e9';
-  bCtx.beginPath(); bCtx.arc(sx, sy, 28, 0, Math.PI * 2); bCtx.fill();
+  bCtx.beginPath(); bCtx.arc(sx, sy, 26, 0, Math.PI * 2); bCtx.fill();
   bCtx.strokeStyle = '#020203'; bCtx.lineWidth = 2.5; bCtx.stroke();
 
-  // Ojos tiernos melancólicos
+  // Ojos Sally
   bCtx.fillStyle = '#020203';
-  bCtx.beginPath(); bCtx.arc(sx - 9, sy - 3, 5, 0, Math.PI * 2); bCtx.arc(sx + 9, sy - 3, 5, 0, Math.PI * 2); bCtx.fill();
-  
-  // Costura en la mejilla
-  bCtx.strokeStyle = '#020203'; bCtx.lineWidth = 1.5;
-  bCtx.beginPath(); bCtx.moveTo(sx + 6, sy + 6); bCtx.lineTo(sx + 14, sy + 12); bCtx.stroke();
+  bCtx.beginPath(); bCtx.arc(sx - 8, sy - 3, 4.5, 0, Math.PI * 2); bCtx.arc(sx + 8, sy - 3, 4.5, 0, Math.PI * 2); bCtx.fill();
   bCtx.restore();
 
-  // 7. Murciélagos volando en el cielo
+  // 7. Murciélagos volando
   bats.forEach(b => {
     b.x -= b.speed;
     if(b.x < -50) b.x = w + 50;
@@ -190,7 +169,7 @@ function drawBackground(time) {
     bCtx.fill();
   });
 
-  // 8. BARDA DE LADRILLOS (Abajo, ocupando el 40% inferior)
+  // 8. PARED DE LADRILLOS
   bCtx.fillStyle = '#0a0c14';
   bCtx.fillRect(0, h * 0.6, w, h * 0.4);
 
@@ -209,7 +188,7 @@ function drawBackground(time) {
   }
 }
 
-// Trazos sólidos y gruesos para formar "KEY" en la barda con estilo gótico
+// Trazos para formar KEY
 const letterGroups = [
   // Letra K
   [
@@ -244,7 +223,6 @@ function spray(x, y, color, radius, count) {
   pCtx.globalAlpha = 1;
 }
 
-// Mini personaje pintor detallado estilo Tim Burton
 function drawStationaryCharacter(stationX, stationY, sprayTargetX, sprayTargetY, isPainting) {
   pCtx.save();
   let charX = stationX;
@@ -269,7 +247,7 @@ function drawStationaryCharacter(stationX, stationY, sprayTargetX, sprayTargetY,
   pCtx.lineTo(charX + 26, charY + 12);
   pCtx.stroke();
 
-  // Gabardina oscura
+  // Gabardina
   pCtx.fillStyle = '#0c0d16';
   pCtx.beginPath();
   pCtx.moveTo(charX + 10, charY - 22);
@@ -287,7 +265,7 @@ function drawStationaryCharacter(stationX, stationY, sprayTargetX, sprayTargetY,
   pCtx.fill();
   pCtx.stroke();
 
-  // Cabello alborotado gótico
+  // Cabello alborotado
   pCtx.fillStyle = '#020304';
   pCtx.beginPath();
   pCtx.moveTo(charX + 6, charY - 38);
@@ -328,9 +306,9 @@ function drawGraffiti(p) {
   pCtx.clearRect(0, 0, paint.width, paint.height);
   
   const colors = {
-    fill: 'rgba(156, 39, 176, 0.96)',   // Morado neón intenso
-    glow: 'rgba(0, 229, 255, 0.9)',      // Cian brillante
-    outline: 'rgba(2, 3, 4, 0.98)'       // Tinta negra profunda
+    fill: 'rgba(156, 39, 176, 0.96)',
+    glow: 'rgba(0, 229, 255, 0.9)',
+    outline: 'rgba(2, 3, 4, 0.98)'
   };
 
   let groupIndex = Math.floor(p * 3);
@@ -379,7 +357,6 @@ function drawGraffiti(p) {
         if (i % 3 === 0) spray(x, y, colors.glow, r * 0.55, 14);
         spray(x, y, colors.fill, r, 22);
 
-        // Goteos pesados y estéticos de pintura
         if (Math.random() > 0.95) {
           let dripLen = 25 + Math.random() * 35;
           for (let d = 0; d < dripLen; d += 2) {
