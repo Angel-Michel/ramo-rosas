@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KEY - Tim Burton Mural Graffiti</title>
+<title>KEY - Tim Burton Canvas Graffiti</title>
 <style>
-  body{margin:0;background:#030406;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:monospace;color:#a0b0c0}
-  #wall{position:relative;width:95vw;max-width:800px;aspect-ratio:16/9;background:#050608;border:8px solid #111;box-shadow:0 0 50px rgba(123,31,162,0.3);overflow:hidden}
+  body{margin:0;background:#050608;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:monospace;color:#a0b0c0}
+  #wall{position:relative;width:95vw;max-width:850px;aspect-ratio:16/9;background:#08090e;border:8px solid #111;box-shadow:0 0 60px rgba(123,31,162,0.4);overflow:hidden;border-radius:12px}
   canvas{position:absolute;top:0;left:0;width:100%;height:100%}
-  div > button{background:#7b1fa2;color:white;border:none;padding:10px 22px;border-radius:8px;font-weight:bold;cursor:pointer;margin:8px;transition:0.2s;box-shadow:0 4px 15px rgba(123,31,162,0.4)}
+  div > button{background:#7b1fa2;color:white;border:none;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer;margin:10px;transition:0.2s;box-shadow:0 4px 15px rgba(123,31,162,0.4);font-size:14px}
   div > button:hover{background:#9c27b0;transform:scale(1.08)}
 </style>
 </head>
 <body>
-<h3 style="opacity:.8;letter-spacing:5px;color:#ce93d8">TIM BURTON x KEY</h3>
+<h3 style="opacity:.8;letter-spacing:5px;color:#ce93d8;margin-bottom:12px">TIM BURTON x KEY</h3>
 <div id="wall">
   <canvas id="bg"></canvas>
   <canvas id="paint"></canvas>
@@ -32,102 +32,115 @@ function resize() {
   drawBackground(0);
 }
 
-// Variables para animación de personajes de fondo y murciélagos
 let animFrame = 0;
 let bats = [
-  {x: 650, y: 120, speed: 1.0, size: 9, wing: 0},
-  {x: 720, y: 90, speed: 1.3, size: 7, wing: 2},
-  {x: 500, y: 160, speed: 0.8, size: 11, wing: 1}
+  {x: 700, y: 100, speed: 1.2, size: 10, wing: 0},
+  {x: 780, y: 70, speed: 1.5, size: 8, wing: 2},
+  {x: 550, y: 130, speed: 0.9, size: 12, wing: 1}
 ];
 
+// Dibujar el fondo cinemático de Tim Burton (Luna gigante, personajes de gran escala, colina espiral y pared inferior)
 function drawBackground(time) {
   const w = bg.width, h = bg.height;
   bCtx.clearRect(0, 0, w, h);
   
-  // 1. Cielo nocturno con luna pálida
+  // 1. Cielo nocturno místico
   let grad = bCtx.createLinearGradient(0, 0, 0, h);
   grad.addColorStop(0, '#020305');
-  grad.addColorStop(0.5, '#0c0d17');
-  grad.addColorStop(1, '#150a20');
+  grad.addColorStop(0.4, '#0d0e1a');
+  grad.addColorStop(1, '#1a0b26');
   bCtx.fillStyle = grad;
   bCtx.fillRect(0, 0, w, h);
 
-  // Luna gigante con brillo brumoso
-  bCtx.fillStyle = 'rgba(200, 230, 255, 0.08)';
-  bCtx.beginPath(); bCtx.arc(w * 0.8, h * 0.28, 110, 0, Math.PI * 2); bCtx.fill();
-  bCtx.fillStyle = 'rgba(210, 240, 255, 0.8)';
-  bCtx.beginPath(); bCtx.arc(w * 0.8, h * 0.28, 65, 0, Math.PI * 2); bCtx.fill();
+  // 2. Luna gigante con resplandor
+  bCtx.fillStyle = 'rgba(210, 235, 255, 0.08)';
+  bCtx.beginPath(); bCtx.arc(w * 0.75, h * 0.3, 140, 0, Math.PI * 2); bCtx.fill();
+  bCtx.fillStyle = 'rgba(220, 242, 255, 0.85)';
+  bCtx.beginPath(); bCtx.arc(w * 0.75, h * 0.3, 85, 0, Math.PI * 2); bCtx.fill();
   
-  // Cráteres lunares
-  bCtx.fillStyle = 'rgba(170, 195, 210, 0.4)';
-  bCtx.beginPath(); bCtx.arc(w * 0.78, h * 0.25, 14, 0, Math.PI * 2); bCtx.fill();
-  bCtx.beginPath(); bCtx.arc(w * 0.83, h * 0.33, 9, 0, Math.PI * 2); bCtx.fill();
+  // Cráteres de la luna
+  bCtx.fillStyle = 'rgba(170, 195, 210, 0.35)';
+  bCtx.beginPath(); bCtx.arc(w * 0.72, h * 0.26, 18, 0, Math.PI * 2); bCtx.fill();
+  bCtx.beginPath(); bCtx.arc(w * 0.79, h * 0.35, 12, 0, Math.PI * 2); bCtx.fill();
 
-  // 2. Personajes grandes de Tim Burton atrás (Jack Skellington y Sally)
-  let floatOffset = Math.sin(time * 0.03) * 4;
-
-  // --- JACK SKELLINGTON (Izquierda al fondo) ---
-  bCtx.save();
-  let jx = w * 0.18, jy = h * 0.52 + floatOffset;
-  // Traje a rayas y cuello de murciélago
-  bCtx.fillStyle = '#08080c';
-  bCtx.beginPath(); bCtx.ellipse(jx, jy + 55, 35, 55, 0, 0, Math.PI * 2); bCtx.fill();
-  // Pajarita murciélago
-  bCtx.fillStyle = '#111';
-  bCtx.beginPath(); bCtx.moveTo(jx, jy + 25); bCtx.lineTo(jx - 20, jy + 15); bCtx.lineTo(jx - 15, jy + 35); bCtx.lineTo(jx, jy + 25); bCtx.lineTo(jx + 15, jy + 35); bCtx.lineTo(jx + 20, jy + 15); bCtx.closePath(); bCtx.fill();
-  // Calavera grande
-  bCtx.fillStyle = '#e2e8f0';
-  bCtx.beginPath(); bCtx.arc(jx, jy, 30, 0, Math.PI * 2); bCtx.fill();
-  // Ojos y sonrisa icónica de Jack
-  bCtx.fillStyle = '#050608';
-  bCtx.beginPath(); 
-  bCtx.arc(jx - 9, jy - 3, 6, 0, Math.PI * 2); 
-  bCtx.arc(jx + 9, jy - 3, 6, 0, Math.PI * 2); 
+  // 3. Colina espiral icónica (Spiral Hill)
+  bCtx.fillStyle = '#040507';
+  bCtx.beginPath();
+  bCtx.moveTo(w * 0.55, h);
+  bCtx.quadraticCurveTo(w * 0.65, h * 0.35, w * 0.78, h * 0.42);
+  bCtx.bezierCurveTo(w * 0.88, h * 0.48, w * 0.82, h * 0.25, w * 0.75, h * 0.28);
+  bCtx.bezierCurveTo(w * 0.70, h * 0.30, w * 0.72, h * 0.38, w * 0.78, h * 0.38);
+  bCtx.lineTo(w, h);
+  bCtx.closePath();
   bCtx.fill();
-  bCtx.lineWidth = 2.5; bCtx.strokeStyle = '#050608';
-  bCtx.beginPath(); bCtx.arc(jx, jy + 8, 14, 0.1 * Math.PI, 0.9 * Math.PI); bCtx.stroke();
-  // Costuras de la sonrisa
-  for(let i = -10; i <= 10; i += 5) {
-    bCtx.beginPath(); bCtx.moveTo(jx + i, jy + 2); bCtx.lineTo(jx + i, jy + 14); bCtx.stroke();
+
+  let floatOffset = Math.sin(time * 0.04) * 5;
+
+  // 4. JACK SKELLINGTON (Grande en el fondo a la izquierda)
+  bCtx.save();
+  let jx = w * 0.22, jy = h * 0.38 + floatOffset;
+  
+  // Cuerpo / Traje a rayas
+  bCtx.fillStyle = '#08080d';
+  bCtx.beginPath(); bCtx.ellipse(jx, jy + 80, 45, 75, 0, 0, Math.PI * 2); bCtx.fill();
+  // Pajarita de murciélago gigante
+  bCtx.fillStyle = '#0a0b10';
+  bCtx.beginPath(); 
+  bCtx.moveTo(jx, jy + 35); 
+  bCtx.lineTo(jx - 35, jy + 20); bCtx.lineTo(jx - 25, jy + 50); 
+  bCtx.lineTo(jx, jy + 35); 
+  bCtx.lineTo(jx + 25, jy + 50); bCtx.lineTo(jx + 35, jy + 20); 
+  bCtx.closePath(); bCtx.fill();
+  
+  // Calavera de Jack
+  bCtx.fillStyle = '#f0f4f8';
+  bCtx.beginPath(); bCtx.arc(jx, jy, 42, 0, Math.PI * 2); bCtx.fill();
+  bCtx.strokeStyle = '#040507'; bCtx.lineWidth = 3; bCtx.stroke();
+
+  // Ojos grandes cosidos
+  bCtx.fillStyle = '#040507';
+  bCtx.beginPath(); 
+  bCtx.ellipse(jx - 14, jy - 5, 10, 14, -0.2, 0, Math.PI * 2); 
+  bCtx.ellipse(jx + 14, jy - 5, 10, 14, 0.2, 0, Math.PI * 2); 
+  bCtx.fill();
+  
+  // Sonrisa cosida icónica
+  bCtx.lineWidth = 3; bCtx.strokeStyle = '#040507';
+  bCtx.beginPath(); bCtx.arc(jx, jy + 10, 22, 0.1 * Math.PI, 0.9 * Math.PI); bCtx.stroke();
+  for(let i = -16; i <= 16; i += 6) {
+    bCtx.beginPath(); bCtx.moveTo(jx + i, jy + 4); bCtx.lineTo(jx + i, jy + 20); bCtx.stroke();
   }
   bCtx.restore();
 
-  // --- SALLY (Derecha al fondo) ---
+  // 5. SALLY (Grande en el fondo a la derecha)
   bCtx.save();
-  let sx = w * 0.85, sy = h * 0.55 - floatOffset;
+  let sx = w * 0.88, sy = h * 0.42 - floatOffset;
+  
   // Vestido de parches
-  bCtx.fillStyle = '#4a148c';
-  bCtx.beginPath(); bCtx.ellipse(sx, sy + 50, 30, 45, 0, 0, Math.PI * 2); bCtx.fill();
-  // Pelo rojo trapezoide característico
+  bCtx.fillStyle = '#311b92';
+  bCtx.beginPath(); bCtx.ellipse(sx, sy + 70, 40, 60, 0, 0, Math.PI * 2); bCtx.fill();
+  // Cabello rojo largo
   bCtx.fillStyle = '#b71c1c';
   bCtx.beginPath();
-  bCtx.moveTo(sx - 25, sy - 15); bCtx.lineTo(sx + 25, sy - 15);
-  bCtx.lineTo(sx + 35, sy + 25); bCtx.lineTo(sx - 35, sy + 25);
+  bCtx.moveTo(sx - 30, sy - 20); bCtx.lineTo(sx + 30, sy - 20);
+  bCtx.lineTo(sx + 45, sy + 40); bCtx.lineTo(sx - 45, sy + 40);
   bCtx.closePath(); bCtx.fill();
-  // Cara pálida con costuras
+  
+  // Cara pálida
   bCtx.fillStyle = '#e8f5e9';
-  bCtx.beginPath(); bCtx.arc(sx, sy, 24, 0, Math.PI * 2); bCtx.fill();
-  // Ojos grandes tiernos y melancólicos
-  bCtx.fillStyle = '#050608';
-  bCtx.beginPath(); bCtx.arc(sx - 8, sy - 2, 4, 0, Math.PI * 2); bCtx.arc(sx + 8, sy - 2, 4, 0, Math.PI * 2); bCtx.fill();
-  // Costura en la mejilla
-  bCtx.strokeStyle = '#050608'; bCtx.lineWidth = 1.5;
-  bCtx.beginPath(); bCtx.moveTo(sx + 6, sy + 8); bCtx.lineTo(sx + 14, sy + 14); bCtx.stroke();
+  bCtx.beginPath(); bCtx.arc(sx, sy, 32, 0, Math.PI * 2); bCtx.fill();
+  bCtx.strokeStyle = '#040507'; bCtx.lineWidth = 2.5; bCtx.stroke();
+
+  // Ojos expresivos
+  bCtx.fillStyle = '#040507';
+  bCtx.beginPath(); bCtx.arc(sx - 11, sy - 3, 5.5, 0, Math.PI * 2); bCtx.arc(sx + 11, sy - 3, 5.5, 0, Math.PI * 2); bCtx.fill();
   bCtx.restore();
 
-  // 3. Colinas retorcidas y columpio
-  bCtx.fillStyle = '#040507';
-  bCtx.beginPath();
-  bCtx.moveTo(0, h); bCtx.lineTo(0, h * 0.7);
-  bCtx.bezierCurveTo(w * 0.25, h * 0.55, w * 0.4, h * 0.8, w * 0.65, h * 0.65);
-  bCtx.bezierCurveTo(w * 0.85, h * 0.5, w * 0.95, h * 0.75, w, h * 0.65);
-  bCtx.lineTo(w, h); bCtx.closePath(); bCtx.fill();
-
-  // 4. Murciélagos volando
+  // 6. Murciélagos volando
   bats.forEach(b => {
     b.x -= b.speed;
-    if(b.x < -40) b.x = w + 40;
-    b.wing += 0.25;
+    if(b.x < -50) b.x = w + 50;
+    b.wing += 0.22;
     let wo = Math.sin(b.wing) * b.size;
     bCtx.fillStyle = '#020304';
     bCtx.beginPath();
@@ -139,19 +152,18 @@ function drawBackground(time) {
     bCtx.fill();
   });
 
-  // 5. LA PARED DE LADRILLOS (Primer plano inferior/central)
-  bCtx.fillStyle = '#101218';
-  bCtx.fillRect(0, h * 0.15, w, h * 0.85);
+  // 7. LA PARED DE LADRILLOS (Ubicada en la parte inferior para dar espacio al fondo)
+  bCtx.fillStyle = '#0e1017';
+  bCtx.fillRect(0, h * 0.45, w, h * 0.55);
 
-  // Patrón de ladrillos oscuros y desgastados
-  bCtx.strokeStyle = '#08090c';
+  bCtx.strokeStyle = '#06070a';
   bCtx.lineWidth = 3;
-  let rowH = 35, colW = 75;
-  for(let y = h * 0.15; y < h; y += rowH) {
+  let rowH = 32, colW = 70;
+  for(let y = h * 0.45; y < h; y += rowH) {
     bCtx.beginPath(); bCtx.moveTo(0, y); bCtx.lineTo(w, y); bCtx.stroke();
   }
   let offset = 0;
-  for(let y = h * 0.15; y < h; y += rowH) {
+  for(let y = h * 0.45; y < h; y += rowH) {
     offset = (offset === 0) ? colW / 2 : 0;
     for(let x = offset; x < w; x += colW) {
       bCtx.beginPath(); bCtx.moveTo(x, y); bCtx.lineTo(x, y + rowH); bCtx.stroke();
@@ -159,26 +171,26 @@ function drawBackground(time) {
   }
 }
 
-// Trazos organizados por letras (K, E, Y)
+// Trazos refinados y góticos para formar la palabra "KEY"
 const letterGroups = [
-  // Grupo 1: Letra K
+  // Letra K
   [
-    {x:0.18, y:0.25, ex:0.18, ey:0.75, width:38},
-    {x:0.18, y:0.50, ex:0.32, ey:0.25, width:30},
-    {x:0.22, y:0.45, ex:0.34, ey:0.75, width:30}
+    {x:0.18, y:0.48, ex:0.18, ey:0.88, width:38},
+    {x:0.18, y:0.68, ex:0.32, ey:0.48, width:30},
+    {x:0.22, y:0.64, ex:0.34, ey:0.88, width:30}
   ],
-  // Grupo 2: Letra E
+  // Letra E
   [
-    {x:0.43, y:0.25, ex:0.43, ey:0.75, width:38},
-    {x:0.43, y:0.25, ex:0.60, ey:0.27, width:26},
-    {x:0.43, y:0.50, ex:0.56, ey:0.52, width:24},
-    {x:0.43, y:0.75, ex:0.60, ey:0.73, width:26}
+    {x:0.43, y:0.48, ex:0.43, ey:0.88, width:38},
+    {x:0.43, y:0.48, ex:0.60, ey:0.50, width:26},
+    {x:0.43, y:0.68, ex:0.56, ey:0.70, width:24},
+    {x:0.43, y:0.88, ex:0.60, ey:0.86, width:26}
   ],
-  // Grupo 3: Letra Y
+  // Letra Y
   [
-    {x:0.69, y:0.25, ex:0.77, ey:0.48, width:30},
-    {x:0.85, y:0.25, ex:0.77, ey:0.48, width:30},
-    {x:0.77, y:0.48, ex:0.77, ey:0.75, width:34}
+    {x:0.69, y:0.48, ex:0.77, ey:0.68, width:30},
+    {x:0.85, y:0.48, ex:0.77, ey:0.68, width:30},
+    {x:0.77, y:0.68, ex:0.77, ey:0.88, width:34}
   ]
 ];
 
@@ -194,16 +206,16 @@ function spray(x, y, color, radius, count) {
   pCtx.globalAlpha = 1;
 }
 
-// Mini personaje de Tim Burton estacionario junto a la letra
+// Mini personaje estacionario frente a la pared pintando con spray
 function drawStationaryCharacter(stationX, stationY, sprayTargetX, sprayTargetY, isPainting) {
   pCtx.save();
   let charX = stationX;
   let charY = stationY;
 
-  // Sombra en el suelo de la pared
-  pCtx.fillStyle = 'rgba(0,0,0,0.6)';
+  // Sombra en el suelo
+  pCtx.fillStyle = 'rgba(0,0,0,0.65)';
   pCtx.beginPath();
-  pCtx.ellipse(charX + 18, charY + 12, 16, 5, 0, 0, Math.PI * 2);
+  pCtx.ellipse(charX + 18, charY + 12, 18, 5, 0, 0, Math.PI * 2);
   pCtx.fill();
 
   pCtx.strokeStyle = '#030406';
@@ -219,7 +231,7 @@ function drawStationaryCharacter(stationX, stationY, sprayTargetX, sprayTargetY,
   pCtx.lineTo(charX + 26, charY + 14);
   pCtx.stroke();
 
-  // Gabardina o abrigo oscuro
+  // Gabardina oscura
   pCtx.fillStyle = '#0c0d14';
   pCtx.beginPath();
   pCtx.moveTo(charX + 10, charY - 22);
@@ -237,7 +249,7 @@ function drawStationaryCharacter(stationX, stationY, sprayTargetX, sprayTargetY,
   pCtx.fill();
   pCtx.stroke();
 
-  // Cabello alborotado puntiagudo estilo Tim Burton
+  // Cabello alborotado estilo Tim Burton
   pCtx.fillStyle = '#030406';
   pCtx.beginPath();
   pCtx.moveTo(charX + 6, charY - 38);
@@ -249,20 +261,20 @@ function drawStationaryCharacter(stationX, stationY, sprayTargetX, sprayTargetY,
   pCtx.lineTo(charX + 30, charY - 36);
   pCtx.fill();
 
-  // Ojos grandes oscuros
+  // Ojos oscuros
   pCtx.beginPath();
   pCtx.arc(charX + 13, charY - 34, 3.5, 0, Math.PI * 2);
   pCtx.arc(charX + 22, charY - 34, 3.5, 0, Math.PI * 2);
   pCtx.fill();
 
-  // Brazos apuntando al spray si está pintando
+  // Brazo extendido hacia el trazo
   if (isPainting) {
     pCtx.beginPath();
     pCtx.moveTo(charX + 18, charY - 18);
     pCtx.lineTo(sprayTargetX, sprayTargetY);
     pCtx.stroke();
 
-    // Bote de aerosol con neón
+    // Bote de aerosol neón
     pCtx.fillStyle = '#9c27b0';
     pCtx.fillRect(sprayTargetX - 7, sprayTargetY - 11, 15, 20);
     pCtx.fillStyle = '#00e5ff';
@@ -274,44 +286,36 @@ function drawStationaryCharacter(stationX, stationY, sprayTargetX, sprayTargetY,
 
 function drawGraffiti(p) {
   animFrame++;
-  drawBackground(animFrame); // Actualiza fondo y personajes grandes
+  drawBackground(animFrame);
   
   pCtx.clearRect(0, 0, paint.width, paint.height);
   
   const colors = {
-    fill: 'rgba(156, 39, 176, 0.95)',   // Morado neón vibrante
-    glow: 'rgba(0, 229, 255, 0.9)',      // Cian brillante
-    outline: 'rgba(3, 4, 6, 0.95)'       // Tinta negra de contorno
+    fill: 'rgba(156, 39, 176, 0.95)',
+    glow: 'rgba(0, 229, 255, 0.9)',
+    outline: 'rgba(3, 4, 6, 0.95)'
   };
 
-  // Determinar en qué letra/grupo estamos según el progreso total (0 a 1)
-  // 3 grupos: K (0 - 0.33), E (0.33 - 0.66), Y (0.66 - 1.0)
   let groupIndex = Math.floor(p * 3);
   if(groupIndex > 2) groupIndex = 2;
 
   let groupProgress = (p * 3) - groupIndex;
   if(groupProgress > 1) groupProgress = 1;
 
-  // Posiciones fijas de pie para el personaje al lado de cada letra
-  // K está aprox en x: 0.25, E en x: 0.50, Y en x: 0.75
   const characterStations = [
-    {x: paint.width * 0.06, y: paint.height * 0.65},  // Al lado izquierdo de K
-    {x: paint.width * 0.32, y: paint.height * 0.65},  // Al lado izquierdo de E
-    {x: paint.width * 0.59, y: paint.height * 0.65}   // Al lado izquierdo de Y
+    {x: paint.width * 0.06, y: paint.height * 0.78},
+    {x: paint.width * 0.32, y: paint.height * 0.78},
+    {x: paint.width * 0.59, y: paint.height * 0.78}
   ];
 
-  // Si está transitando entre grupos, podemos moverlo suavemente
   let currentStation = characterStations[groupIndex];
-
-  // Dibujar todos los trazos de los grupos ya completados o en curso
   let currentStrokeTargetX = paint.width * 0.2;
-  let currentStrokeTargetY = paint.height * 0.5;
+  let currentStrokeTargetY = paint.height * 0.6;
 
   for (let g = 0; g <= groupIndex && g < letterGroups.length; g++) {
     let strokes = letterGroups[g];
     let strokeCount = strokes.length;
     
-    // Si es el grupo actual, calculamos cuántos trazos mostrar
     let activeStrokesCount = (g === groupIndex) ? Math.ceil(groupProgress * strokeCount) : strokeCount;
     if(activeStrokesCount < 1) activeStrokesCount = 1;
 
@@ -338,7 +342,6 @@ function drawGraffiti(p) {
         if (i % 3 === 0) spray(x, y, colors.glow, r * 0.55, 12);
         spray(x, y, colors.fill, r, 18);
 
-        // Goteos góticos largos
         if (Math.random() > 0.955) {
           let dripLen = 25 + Math.random() * 40;
           for (let d = 0; d < dripLen; d += 2) {
@@ -352,7 +355,6 @@ function drawGraffiti(p) {
     }
   }
 
-  // Dibujar al personaje estacionario apuntando al trazo actual
   if (p < 1) {
     drawStationaryCharacter(currentStation.x, currentStation.y, currentStrokeTargetX, currentStrokeTargetY, true);
   }
@@ -363,7 +365,7 @@ function start() {
   cancelAnimationFrame(anim);
   let p = 0;
   (function loop() {
-    p += 0.0022; // Velocidad de pintado fluida
+    p += 0.0022;
     if (p > 1) p = 1;
     drawGraffiti(p);
     if (p < 1) anim = requestAnimationFrame(loop);
